@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/treenity_project/app/src/main/res/drawable-v24/mypage_custom_big_box.xml" value="0.36822916666666666" />
+        <entry key="..\:/treenity_project/app/src/main/res/drawable-v24/mypage_custom_small_box.xml" value="0.2565789473684211" />
+        <entry key="..\:/treenity_project/app/src/main/res/drawable-v24/mypage_recycler_box.xml" value="0.2565789473684211" />
+        <entry key="..\:/treenity_project/app/src/main/res/font/comfortaa_bold.xml" value="0.38229166666666664" />
+        <entry key="..\:/treenity_project/app/src/main/res/layout/activity_main.xml" value="0.14666666666666667" />
+        <entry key="..\:/treenity_project/app/src/main/res/layout/activity_mypage_treelist.xml" value="0.3087719298245614" />
+        <entry key="..\:/treenity_project/app/src/main/res/layout/item_message.xml" value="0.35208333333333336" />
+        <entry key="..\:/treenity_project/app/src/main/res/layout/item_myitem.xml" value="0.3087719298245614" />
+        <entry key="..\:/treenity_project/app/src/main/res/layout/item_myitem_row.xml" value="0.3087719298245614" />
+        <entry key="..\:/treenity_project/app/src/main/res/layout/item_user.xml" value="0.35208333333333336" />
+        <entry key="..\:/treenity_project/app/src/main/res/layout/mypage_activity_main.xml" value="0.3087719298245614" />
+        <entry key="..\:/treenity_project/app/src/main/res/layout/recycler_row_mypage.xml" value="0.3087719298245614" />
+        <entry key="..\:/treenity_project/app/src/main/res/layout/test.xml" value="0.3087719298245614" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
