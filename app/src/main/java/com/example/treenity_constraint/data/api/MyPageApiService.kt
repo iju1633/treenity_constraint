@@ -1,7 +1,7 @@
 package com.example.treenity_constraint.data.api
 
 import com.example.treenity_constraint.data.model.mypage.tree.MyTreeResponse
-import com.example.treenity_constraint.data.model.user.User
+import com.example.treenity_constraint.data.model.mypage.user.User
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET

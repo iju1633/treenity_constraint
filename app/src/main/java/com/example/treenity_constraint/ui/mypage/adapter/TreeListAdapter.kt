@@ -6,11 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.treenity_constraint.data.model.mypage.tree.MyTreeItem
 import com.example.treenity_constraint.data.model.mypage.tree.MyTreeResponse
-import com.example.treenity_constraint.databinding.RecyclerRowMypageBinding
+import com.example.treenity_constraint.databinding.MypageTreelistRowBinding
+
 
 class TreeListAdapter: RecyclerView.Adapter<TreeListAdapter.MyViewHolder>() {
 
-    private lateinit var binding: RecyclerRowMypageBinding
+    private lateinit var binding: MypageTreelistRowBinding
 
     private var treeListItemList: MyTreeResponse? = null
 
@@ -24,7 +25,7 @@ class TreeListAdapter: RecyclerView.Adapter<TreeListAdapter.MyViewHolder>() {
     ): TreeListAdapter.MyViewHolder {
 
         val inflater = LayoutInflater.from(parent.context)
-        binding = RecyclerRowMypageBinding.inflate(inflater) // xml 에 씌여져 있는 view 의 정의를 실제 view 객체로 만듦
+        binding = MypageTreelistRowBinding.inflate(inflater) // xml 에 씌여져 있는 view 의 정의를 실제 view 객체로 만듦
 
         return MyViewHolder( // ViewBinding 을 이용하기 위해 view 가 들어가지 않고 view 객체를 넣음
             binding
@@ -40,7 +41,7 @@ class TreeListAdapter: RecyclerView.Adapter<TreeListAdapter.MyViewHolder>() {
         else treeListItemList?.size!!
     }
 
-    inner class MyViewHolder(itemView: RecyclerRowMypageBinding) :
+    inner class MyViewHolder(itemView: MypageTreelistRowBinding) :
         RecyclerView.ViewHolder(itemView.root) {
 
         // 일반적으로 onBindViewHolder가 아닌 Recycler Holder 클래스 내부에 별도의 bind 함수를 구현하여 바인딩을 진행합니다! 한번 알아보시면 도움이 될 것 같아요! --> resolved!

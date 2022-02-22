@@ -7,10 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.treenity_constraint.databinding.ActivityMypageTreelistBinding
-import com.example.treenity_constraint.databinding.ItemMessageBinding
-import com.example.treenity_constraint.databinding.MypageActivityMainBinding
-import com.example.treenity_constraint.databinding.TestBinding
+import com.example.treenity_constraint.databinding.*
 import com.example.treenity_constraint.ui.mypage.adapter.TreeListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,12 +15,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class TreeListActivity : AppCompatActivity() {
     lateinit var recyclerAdapter: TreeListAdapter
-    private lateinit var binding : ActivityMypageTreelistBinding
+    private lateinit var binding : MypageTreelistActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMypageTreelistBinding.inflate(layoutInflater)
+        binding = MypageTreelistActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 

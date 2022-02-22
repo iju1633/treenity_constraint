@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.treenity_constraint.data.model.mypage.tree.Item
-import com.example.treenity_constraint.databinding.MypageActivityMainBinding
-import com.example.treenity_constraint.databinding.TestBinding
+import com.example.treenity_constraint.databinding.ItemMyitemRowBinding
+import com.example.treenity_constraint.databinding.MypageMypageActivityMainBinding
 import com.example.treenity_constraint.ui.mypage.adapter.MyTreeRecyclerViewAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,13 +15,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class MyPageActivity : AppCompatActivity() {
 
     // MyPage main
-    private lateinit var binding: MypageActivityMainBinding
+    private lateinit var binding: MypageMypageActivityMainBinding
 
     // User
     private val userViewModel: UserViewModel by viewModels()
 
     // My Tree
-    private lateinit var binding2: TestBinding
+    private lateinit var binding2: ItemMyitemRowBinding
     private val myTreeViewModel: MyTreeViewModel by viewModels()
     private lateinit var myTreeRecyclerViewAdapter: MyTreeRecyclerViewAdapter
 
@@ -30,8 +30,8 @@ class MyPageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         //inflate
-        binding = MypageActivityMainBinding.inflate(layoutInflater)
-        binding2 = TestBinding.inflate(layoutInflater)
+        binding = MypageMypageActivityMainBinding.inflate(layoutInflater)
+        binding2 = ItemMyitemRowBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 

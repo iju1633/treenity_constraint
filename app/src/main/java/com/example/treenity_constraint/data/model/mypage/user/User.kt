@@ -1,4 +1,4 @@
-package com.example.treenity_constraint.data.model.user
+package com.example.treenity_constraint.data.model.mypage.user
 
 data class User (
     // val userId: String,
