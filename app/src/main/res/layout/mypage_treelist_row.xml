@@ -72,16 +72,15 @@
 
         </LinearLayout>
 
-        <TextView
+        <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
 
-            android:layout_marginStart="345dp"
+            android:layout_marginStart="325dp"
             android:layout_marginTop="80dp"
 
             android:background="@drawable/item_recycler_mypage_treelist"
             android:contentDescription="@string/item_classification_button"
-            android:clickable="false"
 
             android:elevation="5dp"
             />

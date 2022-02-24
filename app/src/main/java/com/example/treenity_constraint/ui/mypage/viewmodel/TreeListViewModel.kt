@@ -1,4 +1,4 @@
-package com.example.treenity_constraint.ui.mypage
+package com.example.treenity_constraint.ui.mypage.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class TreeListActivityViewModel @Inject constructor(val repository: TreeListRepository): ViewModel() {
+class TreeListViewModel @Inject constructor(val repository: TreeListRepository): ViewModel() {
 
     var liveTreeListItemList: MutableLiveData<MyTreeResponse> = MutableLiveData()
 

@@ -1,4 +1,4 @@
-package com.example.treenity_constraint.ui.mypage
+package com.example.treenity_constraint.ui.mypage.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData

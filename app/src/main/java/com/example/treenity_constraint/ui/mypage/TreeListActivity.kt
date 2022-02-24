@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.treenity_constraint.databinding.*
 import com.example.treenity_constraint.ui.mypage.adapter.TreeListAdapter
+import com.example.treenity_constraint.ui.mypage.viewmodel.TreeListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 ///////////////// 상세페이지 /////////////////
@@ -44,7 +45,7 @@ class TreeListActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        val viewModel:TreeListActivityViewModel = ViewModelProvider(this).get(TreeListActivityViewModel::class.java)
+        val viewModel: TreeListViewModel = ViewModelProvider(this).get(TreeListViewModel::class.java)
         viewModel.getLiveDataObserver().observe(this, Observer {
             if(it != null) {
                 recyclerAdapter.setDataList(it)
