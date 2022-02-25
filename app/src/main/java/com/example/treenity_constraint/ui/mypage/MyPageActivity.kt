@@ -3,7 +3,6 @@ package com.example.treenity_constraint.ui.mypage
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -130,7 +129,7 @@ class MyPageActivity : AppCompatActivity() {
             barDataSet = BarDataSet(barEntries,"Walk Logs")
 
                 //set colors
-            barDataSet.color = ColorTemplate.rgb("#ff7b22")
+            barDataSet.color = ColorTemplate.rgb("#FF408F43") // 바 색상
 
             barData = BarData(barDataSet)
             barData.barWidth = 0.35f
@@ -170,7 +169,7 @@ class MyPageActivity : AppCompatActivity() {
                         }
                     }
                 }
-                setOnChartValueSelectedListener(object: OnChartValueSelectedListener {
+                setOnChartValueSelectedListener(object: OnChartValueSelectedListener { // 바를 touch 하면 생성된 날짜와 걸음 수를 보여주는 dialog 띄움
 
                     override fun onValueSelected(e: Entry?, h: Highlight?) {
 
