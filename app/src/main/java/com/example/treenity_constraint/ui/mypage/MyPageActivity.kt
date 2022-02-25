@@ -3,13 +3,19 @@ package com.example.treenity_constraint.ui.mypage
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.treenity_constraint.R
 import com.example.treenity_constraint.data.model.mypage.tree.Item
 import com.example.treenity_constraint.data.repository.mypage.WalkLogRepository
 import com.example.treenity_constraint.databinding.ItemMytreeRowBinding
 import com.example.treenity_constraint.databinding.MypageMypageActivityMainBinding
+import com.example.treenity_constraint.databinding.MypageMytreeAlertBinding
 import com.example.treenity_constraint.di.MyPageNetworkModule
 import com.example.treenity_constraint.ui.mypage.adapter.MyTreeRecyclerViewAdapter
 import com.example.treenity_constraint.ui.mypage.viewmodel.MyTreeViewModel
@@ -19,6 +25,8 @@ import com.example.treenity_constraint.ui.mypage.viewmodel.WalkLogViewModel
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,7 +53,10 @@ class MyPageActivity : AppCompatActivity() {
     var walkLogIds = ArrayList<Float>()
     var walks = ArrayList<Float>()
     var dates = ArrayList<String>()
-    var idAndDate = mapOf<Float, String>()
+    var idAndDate: MutableMap<Float, String> = mutableMapOf()
+
+    private lateinit var binding3: MypageMytreeAlertBinding
+    lateinit var alertDialog: AlertDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +65,7 @@ class MyPageActivity : AppCompatActivity() {
         //inflate
         binding = MypageMypageActivityMainBinding.inflate(layoutInflater)
         binding2 = ItemMytreeRowBinding.inflate(layoutInflater)
+        binding3 = MypageMytreeAlertBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 
@@ -92,6 +104,7 @@ class MyPageActivity : AppCompatActivity() {
 
             //get data from api and put them in barEntries/pieEntries(리스트 크기만큼 for loop 를 돌며 추가)
             val index = it.size - 1
+
             // walkLogId 와 walk 와 date 를 모두 따로따로 ArrayList 로 저장
             for(i in 0..index) {// x축
                 walkLogIds.add(it[i].walkLogId.toFloat())
@@ -106,7 +119,7 @@ class MyPageActivity : AppCompatActivity() {
             }
 
             for(i in 0..index) // (id, date) 구조로 map 에 데이터 추가
-                idAndDate.plus(Pair(it[i].walkLogId.toFloat(), it[i].date))
+                idAndDate[it[i].walkLogId.toFloat()] = it[i].date
 
             // BarEntry 에 데이터 삽입
             for(i in 0 until walks.size)
@@ -130,15 +143,15 @@ class MyPageActivity : AppCompatActivity() {
             binding.barChart.run {
                 setFitBars(true)
 
-                description.isEnabled = false //차트 옆에 별도로 표기되는 description이다. false로 설정하여 안보이게 했다.
+                description.isEnabled = false //차트 옆에 별도로 표기되는 description
                 isClickable = false
                 setDrawValueAboveBar(true)
                 setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 설정
                 setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
                 setScaleEnabled(false) // 확대 안되게 설정
-                setDrawBarShadow(false)//그래프의 그림자
-                setDrawGridBackground(false)//격자구조 넣을건지
-                axisLeft.run { //왼쪽 축. 즉 Y방향 축을 뜻한다.
+                setDrawBarShadow(false) // 그래프의 그림자
+                setDrawGridBackground(false) // 격자구조 넣을건지
+                axisLeft.run { // 왼쪽 축. 즉 Y방향 축을 뜻한다.
                     granularity = 1000f // 1000 단위마다 선을 그리려고 granularity 설정 해 주었다.
                     setDrawLabels(true) //
                     setDrawGridLines(true) //격자 라인 활용
@@ -157,6 +170,28 @@ class MyPageActivity : AppCompatActivity() {
                         }
                     }
                 }
+                setOnChartValueSelectedListener(object: OnChartValueSelectedListener {
+
+                    override fun onValueSelected(e: Entry?, h: Highlight?) {
+
+                        val view = LayoutInflater.from(this@MyPageActivity).inflate(R.layout.mypage_mytree_alert, null)
+
+                        val date = view.findViewById<TextView>(R.id.date)
+                        val walk = view.findViewById<TextView>(R.id.walks)
+
+                        date.text = idAndDate[e!!.x]
+                        (e.y.toInt().toString() + " steps").also { walk.text = it }
+
+                        val builder = AlertDialog.Builder(this@MyPageActivity)
+                        builder.setView(view)
+
+                        alertDialog = builder.create()
+                        alertDialog.show()
+
+                    }
+
+                    override fun onNothingSelected() {}
+                })
                 axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
                 //axisLeft.isEnabled = false
                 animateY(1000)
