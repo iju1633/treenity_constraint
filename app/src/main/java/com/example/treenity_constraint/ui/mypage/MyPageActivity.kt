@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.treenity_constraint.data.model.mypage.tree.Item
 import com.example.treenity_constraint.data.repository.mypage.WalkLogRepository
-import com.example.treenity_constraint.databinding.ItemMyitemRowBinding
+import com.example.treenity_constraint.databinding.ItemMytreeRowBinding
 import com.example.treenity_constraint.databinding.MypageMypageActivityMainBinding
 import com.example.treenity_constraint.di.MyPageNetworkModule
 import com.example.treenity_constraint.ui.mypage.adapter.MyTreeRecyclerViewAdapter
@@ -18,6 +18,7 @@ import com.example.treenity_constraint.ui.mypage.viewmodel.ViewModelFactory
 import com.example.treenity_constraint.ui.mypage.viewmodel.WalkLogViewModel
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,7 +32,7 @@ class MyPageActivity : AppCompatActivity() {
     private val userViewModel: UserViewModel by viewModels()
 
     // My Tree
-    private lateinit var binding2: ItemMyitemRowBinding
+    private lateinit var binding2: ItemMytreeRowBinding
     private val myTreeViewModel: MyTreeViewModel by viewModels()
     private lateinit var myTreeRecyclerViewAdapter: MyTreeRecyclerViewAdapter
 
@@ -52,7 +53,7 @@ class MyPageActivity : AppCompatActivity() {
 
         //inflate
         binding = MypageMypageActivityMainBinding.inflate(layoutInflater)
-        binding2 = ItemMyitemRowBinding.inflate(layoutInflater)
+        binding2 = ItemMytreeRowBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 
@@ -130,8 +131,11 @@ class MyPageActivity : AppCompatActivity() {
                 setFitBars(true)
 
                 description.isEnabled = false //차트 옆에 별도로 표기되는 description이다. false로 설정하여 안보이게 했다.
-                setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 정해주었다.
+                isClickable = false
+                setDrawValueAboveBar(true)
+                setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 설정
                 setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
+                setScaleEnabled(false) // 확대 안되게 설정
                 setDrawBarShadow(false)//그래프의 그림자
                 setDrawGridBackground(false)//격자구조 넣을건지
                 axisLeft.run { //왼쪽 축. 즉 Y방향 축을 뜻한다.
@@ -146,10 +150,15 @@ class MyPageActivity : AppCompatActivity() {
                     position = XAxis.XAxisPosition.BOTTOM//X축을 아래에다가 둔다.
                     setDrawAxisLine(true) // 축 그림
                     setDrawGridLines(false) // 격자
-                    textSize = 14f // 텍스트 크기
+                    textSize = 12f // 텍스트 크기
+                    valueFormatter = object: ValueFormatter() { // 가장 최신 데이터의 날짜만을 x축에 표시
+                        override fun getFormattedValue(value: Float): String? {
+                            return if(value.equals(walkLogIds[walkLogIds.size-1])) dates[dates.size-1] else ""
+                        }
+                    }
                 }
                 axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
-                axisLeft.isEnabled = false
+                //axisLeft.isEnabled = false
                 animateY(1000)
                 legend.isEnabled = false //차트 범례 설정
 

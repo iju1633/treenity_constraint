@@ -251,7 +251,7 @@
 
                     android:text="My Walklog"
                     android:fontFamily="@font/comfortaa_bold"
-                    android:textSize="18sp"
+                    android:textSize="25sp"
                     android:elevation="5dp"
 
                     android:layout_marginStart="80dp"
@@ -298,7 +298,7 @@
 
                     android:text="My Tree"
                     android:fontFamily="@font/comfortaa_bold"
-                    android:textSize="18sp"
+                    android:textSize="25sp"
                     android:elevation="5dp"
 
                     android:layout_marginStart="80dp"
