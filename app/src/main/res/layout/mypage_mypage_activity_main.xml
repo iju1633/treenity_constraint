@@ -76,18 +76,17 @@
 
                     />
 
+
                 <TextView
                     android:id="@+id/settings"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-
                     android:layout_marginStart="320dp"
                     android:layout_marginTop="55dp"
 
-                    android:elevation="5dp"
+                    android:background="@drawable/mypage_setting_icon"
 
-                    android:background="@drawable/mypage_setting_icon" />
-
+                    android:elevation="5dp" />
 
                 <TextView
                     android:layout_width="wrap_content"

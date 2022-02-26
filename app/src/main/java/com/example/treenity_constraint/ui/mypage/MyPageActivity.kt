@@ -15,6 +15,7 @@ import com.example.treenity_constraint.data.repository.mypage.WalkLogRepository
 import com.example.treenity_constraint.databinding.ItemMytreeRowBinding
 import com.example.treenity_constraint.databinding.MypageMypageActivityMainBinding
 import com.example.treenity_constraint.databinding.MypageMytreeAlertBinding
+import com.example.treenity_constraint.databinding.SettingsActivityBinding
 import com.example.treenity_constraint.di.MyPageNetworkModule
 import com.example.treenity_constraint.ui.mypage.adapter.MyTreeRecyclerViewAdapter
 import com.example.treenity_constraint.ui.mypage.viewmodel.MyTreeViewModel
@@ -58,6 +59,7 @@ class MyPageActivity : AppCompatActivity() {
 //    lateinit var alertDialog: AlertDialog 나중에 혹시 하자고 할까봐 남겨둠
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -90,6 +92,12 @@ class MyPageActivity : AppCompatActivity() {
                 }
             }
         })
+
+        // 이벤트 등록 : 설정 아이콘 누르면 환경 설정 페이지로 전환
+        binding.settings.setOnClickListener {
+            val nextIntent = Intent(this@MyPageActivity, SettingsActivity::class.java)
+            startActivity(nextIntent)
+        }
     }
 
 
