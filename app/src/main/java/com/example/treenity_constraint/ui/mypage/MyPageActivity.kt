@@ -40,7 +40,6 @@ class MyPageActivity : AppCompatActivity() {
     private val userViewModel: UserViewModel by viewModels()
 
     // My Tree
-    private lateinit var binding2: ItemMytreeRowBinding
     private val myTreeViewModel: MyTreeViewModel by viewModels()
     private lateinit var myTreeRecyclerViewAdapter: MyTreeRecyclerViewAdapter
 
@@ -56,7 +55,7 @@ class MyPageActivity : AppCompatActivity() {
     var idAndDate: MutableMap<Float, String> = mutableMapOf()
 
     private lateinit var binding3: MypageMytreeAlertBinding
-    lateinit var alertDialog: AlertDialog
+//    lateinit var alertDialog: AlertDialog 나중에 혹시 하자고 할까봐 남겨둠
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +63,6 @@ class MyPageActivity : AppCompatActivity() {
 
         //inflate
         binding = MypageMypageActivityMainBinding.inflate(layoutInflater)
-        binding2 = ItemMytreeRowBinding.inflate(layoutInflater)
         binding3 = MypageMytreeAlertBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
@@ -146,11 +144,10 @@ class MyPageActivity : AppCompatActivity() {
                 setFitBars(true)
 
                 description.isEnabled = false //차트 옆에 별도로 표기되는 description
-                isClickable = false
                 setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
                 setScaleEnabled(false) // 확대 안되게 설정
                 setDrawBarShadow(false) // 그래프의 그림자
-//                setDrawGridBackground(false) // 격자구조 넣을건지
+                // 나중에 혹시 하자고 할까봐 남겨둠
 //                axisLeft.run { // 왼쪽 축. 즉 Y방향 축을 뜻한다.
 //                    granularity = 1000f // 1000 단위마다 선을 그리려고 granularity 설정 해 주었다.
 //                    setDrawLabels(true) //
@@ -171,6 +168,7 @@ class MyPageActivity : AppCompatActivity() {
                         }
                     }
                 }
+                // 나중에 혹시 하자고 할까봐 남겨둠
 //                setOnChartValueSelectedListener(object: OnChartValueSelectedListener { // 바를 touch 하면 생성된 날짜와 걸음 수를 보여주는 dialog 띄움
 //
 //                    override fun onValueSelected(e: Entry?, h: Highlight?) {
@@ -193,12 +191,12 @@ class MyPageActivity : AppCompatActivity() {
 //
 //                    override fun onNothingSelected() {}
 //                })
-                axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
-                axisLeft.isEnabled = false
+                axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 설정
+                axisLeft.isEnabled = false // 왼쪽 Y축을 안보이게 설정
                 animateY(2000)
                 legend.isEnabled = false //차트 범례 설정
 
-                invalidate()
+                invalidate() // refresh
             }
         })
     }
