@@ -28,6 +28,7 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class MyPageActivity : AppCompatActivity() {
@@ -130,6 +131,7 @@ class MyPageActivity : AppCompatActivity() {
 
                 //set colors
             barDataSet.color = ColorTemplate.rgb("#FF408F43") // 바 색상
+            barDataSet.valueTextSize = 12f
 
             barData = BarData(barDataSet)
             barData.barWidth = 0.35f
@@ -140,60 +142,60 @@ class MyPageActivity : AppCompatActivity() {
 
             // prepare chart
             binding.barChart.run {
+                data = barData
                 setFitBars(true)
 
                 description.isEnabled = false //차트 옆에 별도로 표기되는 description
                 isClickable = false
-                setDrawValueAboveBar(true)
-                setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 설정
                 setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
                 setScaleEnabled(false) // 확대 안되게 설정
                 setDrawBarShadow(false) // 그래프의 그림자
-                setDrawGridBackground(false) // 격자구조 넣을건지
-                axisLeft.run { // 왼쪽 축. 즉 Y방향 축을 뜻한다.
-                    granularity = 1000f // 1000 단위마다 선을 그리려고 granularity 설정 해 주었다.
-                    setDrawLabels(true) //
-                    setDrawGridLines(true) //격자 라인 활용
-                    setDrawAxisLine(false) // 축 그리기 설정
-
-                    textSize = 14f //라벨 텍스트 크기
-                }
+//                setDrawGridBackground(false) // 격자구조 넣을건지
+//                axisLeft.run { // 왼쪽 축. 즉 Y방향 축을 뜻한다.
+//                    granularity = 1000f // 1000 단위마다 선을 그리려고 granularity 설정 해 주었다.
+//                    setDrawLabels(true) //
+//                    setDrawGridLines(true) //격자 라인 활용
+//                    setDrawAxisLine(false) // 축 그리기 설정
+//
+//                    textSize = 14f //라벨 텍스트 크기
+//                }
                 xAxis.run {
                     position = XAxis.XAxisPosition.BOTTOM//X축을 아래에다가 둔다.
                     setDrawAxisLine(true) // 축 그림
                     setDrawGridLines(false) // 격자
                     textSize = 12f // 텍스트 크기
-                    valueFormatter = object: ValueFormatter() { // 가장 최신 데이터의 날짜만을 x축에 표시
+                    valueFormatter = object: ValueFormatter() { // MM/dd 형태로 날짜 모두 표시
                         override fun getFormattedValue(value: Float): String? {
-                            return if(value.equals(walkLogIds[walkLogIds.size-1])) dates[dates.size-1] else ""
+
+                            return idAndDate[value]?.substring(5,10)?.replace("-", "/")
                         }
                     }
                 }
-                setOnChartValueSelectedListener(object: OnChartValueSelectedListener { // 바를 touch 하면 생성된 날짜와 걸음 수를 보여주는 dialog 띄움
-
-                    override fun onValueSelected(e: Entry?, h: Highlight?) {
-
-                        val view = LayoutInflater.from(this@MyPageActivity).inflate(R.layout.mypage_mytree_alert, null)
-
-                        val date = view.findViewById<TextView>(R.id.date)
-                        val walk = view.findViewById<TextView>(R.id.walks)
-
-                        date.text = idAndDate[e!!.x]
-                        (e.y.toInt().toString() + " steps").also { walk.text = it }
-
-                        val builder = AlertDialog.Builder(this@MyPageActivity)
-                        builder.setView(view)
-
-                        alertDialog = builder.create()
-                        alertDialog.show()
-
-                    }
-
-                    override fun onNothingSelected() {}
-                })
+//                setOnChartValueSelectedListener(object: OnChartValueSelectedListener { // 바를 touch 하면 생성된 날짜와 걸음 수를 보여주는 dialog 띄움
+//
+//                    override fun onValueSelected(e: Entry?, h: Highlight?) {
+//
+//                        val view = LayoutInflater.from(this@MyPageActivity).inflate(R.layout.mypage_mytree_alert, null)
+//
+//                        val date = view.findViewById<TextView>(R.id.date)
+//                        val walk = view.findViewById<TextView>(R.id.walks)
+//
+//                        date.text = idAndDate[e!!.x]
+//                        (e.y.toInt().toString() + " steps").also { walk.text = it }
+//
+//                        val builder = AlertDialog.Builder(this@MyPageActivity)
+//                        builder.setView(view)
+//
+//                        alertDialog = builder.create()
+//                        alertDialog.show()
+//
+//                    }
+//
+//                    override fun onNothingSelected() {}
+//                })
                 axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
-                //axisLeft.isEnabled = false
-                animateY(1000)
+                axisLeft.isEnabled = false
+                animateY(2000)
                 legend.isEnabled = false //차트 범례 설정
 
                 invalidate()
