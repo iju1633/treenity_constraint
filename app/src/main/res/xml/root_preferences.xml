@@ -19,12 +19,13 @@
             app:key="switch" />
 
         <ListPreference
-            android:defaultValue="10"
+            app:defaultValue="10"
+            app:entries="@array/rendering_entries"
+            app:entryValues="@array/rendering_values"
             android:summary="Choose your number of trees rendered"
-            android:title="Rendering Tree"
-            app:key = "render"
-            />
-
+            app:key="render"
+            app:title="Rendering Tree"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 

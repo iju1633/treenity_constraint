@@ -30,7 +30,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         }
     }
 
-    // 이벤트 작성 nickname 변경될 때, push 알람 설정 true 되었을 때, 랜더링 될 나무 수 변경되었을 때
+    // 이벤트 작성 nickname 변경될 때, push 알람 설정 true 되었을 때, 랜더링 될 나무 수 변경되었을 때 서버로 POST 요청보낼 것
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
 
     }

@@ -226,8 +226,6 @@ class MyPageActivity : AppCompatActivity() {
         myTreeViewModel.responseMyTree.observe(this, { listMyTrees ->
             myTreeRecyclerViewAdapter.trees = listMyTrees
         })
-
-
     }
 
     private fun setViews() {
