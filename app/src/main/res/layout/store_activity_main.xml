@@ -97,12 +97,14 @@
         android:textSize="25sp"/>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/water"
         android:layout_width="150dp"
         android:layout_height="240dp"
         android:elevation="10dp"
         app:cardCornerRadius="10dp"
         android:layout_marginTop="500dp"
         android:layout_marginStart="10dp"
+        android:clickable="true"
         >
 
         <LinearLayout

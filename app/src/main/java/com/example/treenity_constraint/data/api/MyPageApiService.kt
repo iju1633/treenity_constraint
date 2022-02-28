@@ -12,7 +12,7 @@ import retrofit2.http.GET
 interface MyPageApiService {
 
     // User 부분
-    @GET("users/1/my-page")
+    @GET("users/1")
     suspend fun getUserData(): Response<User>
 
     // MyPageActivity

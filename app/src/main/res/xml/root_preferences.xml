@@ -18,15 +18,6 @@
             android:title="Push Alarm"
             app:key="switch" />
 
-        <ListPreference
-            app:defaultValue="10"
-            app:entries="@array/rendering_entries"
-            app:entryValues="@array/rendering_values"
-            android:summary="Choose your number of trees rendered"
-            app:key="render"
-            app:title="Rendering Tree"
-            app:useSimpleSummaryProvider="true" />
-
     </PreferenceCategory>
 
 </PreferenceScreen>

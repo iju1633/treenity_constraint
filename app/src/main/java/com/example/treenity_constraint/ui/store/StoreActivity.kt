@@ -6,12 +6,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
-import com.example.treenity_constraint.data.model.mypage.tree.Item
 import com.example.treenity_constraint.data.model.store.StoreItem
 import com.example.treenity_constraint.databinding.StoreActivityMainBinding
-import com.example.treenity_constraint.ui.mypage.TreeListActivity
-import com.example.treenity_constraint.ui.mypage.adapter.MyTreeRecyclerViewAdapter
-import com.example.treenity_constraint.ui.mypage.viewmodel.MyTreeViewModel
+import com.example.treenity_constraint.databinding.StoreConfirmationMainBinding
 import com.example.treenity_constraint.ui.mypage.viewmodel.UserViewModel
 import com.example.treenity_constraint.ui.store.adapter.StoreAdapter
 import com.example.treenity_constraint.ui.store.viewmodel.SeedsViewModel
@@ -22,6 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class StoreActivity : AppCompatActivity() {
     lateinit var storeAdapter: StoreAdapter
     private lateinit var binding : StoreActivityMainBinding
+    private lateinit var binding2 : StoreConfirmationMainBinding
+
     private val seedsViewModel: SeedsViewModel by viewModels()
     private val waterViewModel: WaterViewModel by viewModels()
 
@@ -33,6 +32,7 @@ class StoreActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = StoreActivityMainBinding.inflate(layoutInflater)
+        binding2 = StoreConfirmationMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 
@@ -60,16 +60,22 @@ class StoreActivity : AppCompatActivity() {
             }
         })
 
-        // 이벤트 등록 : 아이템을 누르면, 해당 아이템의 index 를 상세페이지로 전달해줌
+        // 이벤트 등록 : Seeds의 아이템을 누르면, 해당 아이템의 index 를 상세페이지로 전달해줌
         storeAdapter.setOnItemClickListener(object : StoreAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) { 
 
-                val nextIntent = Intent(this@StoreActivity, TreeListActivity::class.java)
+                val nextIntent = Intent(this@StoreActivity, ConfirmationActivity::class.java)
                 nextIntent.putExtra("index", position) // item list 의 index 를 넘겨준다!
                 startActivity(nextIntent)
-
             }
         })
+
+        // 이벤트 등록 : Water 의 아이템을 누르면, 상세페이지로 화면 전환
+        binding.water.setOnClickListener{
+
+            val intent = Intent(this@StoreActivity, ConfirmationActivity::class.java)
+            startActivity(intent)
+        }
 
         // 유저가 보유한 나무 목록을 보여주는 페이지의 좌측 상단 뒤로가기 아이콘을 누르면 마이페이지 창으로 전환됨
         binding.gotoAr.setOnClickListener {
@@ -87,7 +93,7 @@ class StoreActivity : AppCompatActivity() {
 
         binding.storeRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        binding.storeRecycler.adapter =storeAdapter
+        binding.storeRecycler.adapter = storeAdapter
 
     }
 }

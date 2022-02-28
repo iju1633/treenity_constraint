@@ -21,10 +21,12 @@
 
         <activity android:name=".ui.mypage.TreeListActivity" />
 
-        <activity android:name=".ui.mypage.MyPageActivity" />
+        <activity android:name=".ui.store.StoreActivity" />
+
+        <activity android:name=".ui.store.ConfirmationActivity" />
 
         <activity
-            android:name=".ui.store.StoreActivity"
+            android:name=".ui.mypage.MyPageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
