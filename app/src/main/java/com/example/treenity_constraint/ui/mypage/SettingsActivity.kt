@@ -11,7 +11,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.settings_activity)
+        setContentView(R.layout.mypage_settings_activity_main)
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()

@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.treenity_constraint.R
 import com.example.treenity_constraint.data.model.mypage.tree.Item
 import com.example.treenity_constraint.data.repository.mypage.WalkLogRepository
-import com.example.treenity_constraint.databinding.ItemMytreeRowBinding
+import com.example.treenity_constraint.databinding.MypageMytreeItemRowBinding
 import com.example.treenity_constraint.databinding.MypageMypageActivityMainBinding
 import com.example.treenity_constraint.databinding.MypageMytreeAlertBinding
-import com.example.treenity_constraint.databinding.SettingsActivityBinding
+import com.example.treenity_constraint.databinding.MypageSettingsActivityMainBinding
 import com.example.treenity_constraint.di.MyPageNetworkModule
 import com.example.treenity_constraint.ui.mypage.adapter.MyTreeRecyclerViewAdapter
 import com.example.treenity_constraint.ui.mypage.viewmodel.MyTreeViewModel

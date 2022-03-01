@@ -8,207 +8,207 @@
     android:background="#FEFAFA"
     >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="300dp"-->
 
 
-        android:background="@drawable/mypage_custom_big_box" />
+<!--        android:background="@drawable/mypage_custom_big_box" />-->
 
-    <TextView
-        android:id="@+id/userprofile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/mypage_custom_imagebutton"
+<!--    <TextView-->
+<!--        android:id="@+id/userprofile"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@drawable/mypage_custom_imagebutton"-->
 
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="60dp"
+<!--        android:layout_marginStart="30dp"-->
+<!--        android:layout_marginTop="60dp"-->
 
-        tools:srcCompat="@tools:sample/avatars" />
+<!--        tools:srcCompat="@tools:sample/avatars" />-->
 
-    <TextView
-        android:id="@+id/username"
+<!--    <TextView-->
+<!--        android:id="@+id/username"-->
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
 
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="60dp"
+<!--        android:layout_marginStart="140dp"-->
+<!--        android:layout_marginTop="60dp"-->
 
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
+<!--        android:textSize="25sp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textColor="@color/white"-->
 
-        android:text="{이름}"
-        />
+<!--        android:text="{이름}"-->
+<!--        />-->
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
 
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="110dp"
+<!--        android:layout_marginStart="140dp"-->
+<!--        android:layout_marginTop="110dp"-->
 
-        android:textSize="15sp"
-        android:textColor="@color/white"
+<!--        android:textSize="15sp"-->
+<!--        android:textColor="@color/white"-->
 
-        android:text="Thank you for supporting our app"
+<!--        android:text="Thank you for supporting our app"-->
 
-        />
+<!--        />-->
 
-    <TextView
-        android:id="@+id/settings"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+<!--    <TextView-->
+<!--        android:id="@+id/settings"-->
+<!--        android:layout_width="48dp"-->
+<!--        android:layout_height="48dp"-->
 
-        android:layout_marginStart="320dp"
-        android:layout_marginTop="50dp"
+<!--        android:layout_marginStart="320dp"-->
+<!--        android:layout_marginTop="50dp"-->
 
-        android:elevation="5dp"
+<!--        android:elevation="5dp"-->
 
-        android:background="@drawable/mypage_setting_icon" />
+<!--        android:background="@drawable/mypage_setting_icon" />-->
 
 
-    <TextView
-        android:layout_width="wrap_content"
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
 
-        android:layout_height="wrap_content"
+<!--        android:layout_height="wrap_content"-->
 
-        android:background="@drawable/mypage_custom_small_box"
+<!--        android:background="@drawable/mypage_custom_small_box"-->
 
 
-        android:text="Point"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:gravity="center|top"
+<!--        android:text="Point"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="15sp"-->
+<!--        android:gravity="center|top"-->
 
-        android:layout_marginTop="180dp"
-        android:layout_marginStart="30dp"
+<!--        android:layout_marginTop="180dp"-->
+<!--        android:layout_marginStart="30dp"-->
 
-        android:elevation="5dp"
-        />
+<!--        android:elevation="5dp"-->
+<!--        />-->
 
-    <TextView
-        android:id="@+id/point"
+<!--    <TextView-->
+<!--        android:id="@+id/point"-->
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
 
-        android:text="{P}"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="13sp"
+<!--        android:text="{P}"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textSize="13sp"-->
 
-        android:elevation="5dp"
+<!--        android:elevation="5dp"-->
 
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="220dp"
-        />
+<!--        android:layout_marginStart="75dp"-->
+<!--        android:layout_marginTop="220dp"-->
+<!--        />-->
 
 
-    <TextView
-        android:layout_width="28dp"
-        android:layout_height="27dp"
+<!--    <TextView-->
+<!--        android:layout_width="28dp"-->
+<!--        android:layout_height="27dp"-->
 
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="210dp"
+<!--        android:layout_marginStart="35dp"-->
+<!--        android:layout_marginTop="210dp"-->
 
-        android:background="@drawable/mypage_point"
+<!--        android:background="@drawable/mypage_point"-->
 
-        android:elevation="5dp"
-        />
+<!--        android:elevation="5dp"-->
+<!--        />-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
 
-        android:background="@drawable/mypage_custom_small_box"
-        android:elevation="5dp"
+<!--        android:background="@drawable/mypage_custom_small_box"-->
+<!--        android:elevation="5dp"-->
 
-        android:text="Pail"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:gravity="center|top"
+<!--        android:text="Pail"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="15sp"-->
+<!--        android:gravity="center|top"-->
 
-        android:layout_marginTop="180dp"
-        android:layout_marginStart="150dp"
-        />
+<!--        android:layout_marginTop="180dp"-->
+<!--        android:layout_marginStart="150dp"-->
+<!--        />-->
 
-    <TextView
-        android:id="@+id/bucket"
+<!--    <TextView-->
+<!--        android:id="@+id/bucket"-->
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
 
-        android:text="{%d}"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="13sp"
+<!--        android:text="{%d}"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textSize="13sp"-->
 
-        android:elevation="5dp"
+<!--        android:elevation="5dp"-->
 
-        android:layout_marginStart="190dp"
-        android:layout_marginTop="220dp"
-        />
+<!--        android:layout_marginStart="190dp"-->
+<!--        android:layout_marginTop="220dp"-->
+<!--        />-->
 
 
-    <TextView
-        android:layout_width="28dp"
-        android:layout_height="27dp"
+<!--    <TextView-->
+<!--        android:layout_width="28dp"-->
+<!--        android:layout_height="27dp"-->
 
-        android:layout_marginStart="155dp"
-        android:layout_marginTop="210dp"
+<!--        android:layout_marginStart="155dp"-->
+<!--        android:layout_marginTop="210dp"-->
 
-        android:background="@drawable/mypage_pail"
+<!--        android:background="@drawable/mypage_pail"-->
 
-        android:elevation="5dp"
-        />
+<!--        android:elevation="5dp"-->
+<!--        />-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
 
-        android:background="@drawable/mypage_custom_small_box"
-        android:elevation="5dp"
+<!--        android:background="@drawable/mypage_custom_small_box"-->
+<!--        android:elevation="5dp"-->
 
-        android:text="Step"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:gravity="center|top"
+<!--        android:text="Step"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="15sp"-->
+<!--        android:gravity="center|top"-->
 
-        android:layout_marginTop="180dp"
-        android:layout_marginStart="270dp"
-        />
+<!--        android:layout_marginTop="180dp"-->
+<!--        android:layout_marginStart="270dp"-->
+<!--        />-->
 
-    <TextView
-        android:id="@+id/totalWalk"
+<!--    <TextView-->
+<!--        android:id="@+id/totalWalk"-->
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
 
-        android:layout_marginStart="310dp"
-        android:layout_marginTop="220dp"
-        android:elevation="5dp"
-        android:text="{%d}"
+<!--        android:layout_marginStart="310dp"-->
+<!--        android:layout_marginTop="220dp"-->
+<!--        android:elevation="5dp"-->
+<!--        android:text="{%d}"-->
 
-        android:textColor="@color/black"
+<!--        android:textColor="@color/black"-->
 
-        android:textSize="13sp"
-        android:textStyle="bold" />
+<!--        android:textSize="13sp"-->
+<!--        android:textStyle="bold" />-->
 
 
-    <TextView
-        android:layout_width="28dp"
-        android:layout_height="27dp"
+<!--    <TextView-->
+<!--        android:layout_width="28dp"-->
+<!--        android:layout_height="27dp"-->
 
-        android:layout_marginStart="275dp"
-        android:layout_marginTop="210dp"
+<!--        android:layout_marginStart="275dp"-->
+<!--        android:layout_marginTop="210dp"-->
 
-        android:background="@drawable/mypage_step"
+<!--        android:background="@drawable/mypage_step"-->
 
-        android:elevation="5dp"
-        />
+<!--        android:elevation="5dp"-->
+<!--        />-->
 
 </FrameLayout>
 

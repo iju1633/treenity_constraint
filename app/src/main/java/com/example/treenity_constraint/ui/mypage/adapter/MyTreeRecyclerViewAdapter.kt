@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.treenity_constraint.data.model.mypage.tree.Item
 import com.example.treenity_constraint.data.model.mypage.tree.MyTreeItem
-import com.example.treenity_constraint.databinding.ItemMytreeRowBinding
+import com.example.treenity_constraint.databinding.MypageMytreeItemRowBinding
 
 
 class MyTreeRecyclerViewAdapter(items: List<Item>) : RecyclerView.Adapter<MyTreeRecyclerViewAdapter.MyViewHolder>() {
@@ -24,7 +24,7 @@ class MyTreeRecyclerViewAdapter(items: List<Item>) : RecyclerView.Adapter<MyTree
 
     inner class MyViewHolder
     constructor(
-        val binding: ItemMytreeRowBinding, listener: OnItemClickListener
+        val binding: MypageMytreeItemRowBinding, listener: OnItemClickListener
     ): RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -67,7 +67,7 @@ class MyTreeRecyclerViewAdapter(items: List<Item>) : RecyclerView.Adapter<MyTree
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
-            ItemMytreeRowBinding.inflate(
+            MypageMytreeItemRowBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             ),
             mListener

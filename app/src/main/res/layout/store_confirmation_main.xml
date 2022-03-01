@@ -18,7 +18,7 @@
         android:elevation="5dp"
 
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/previous_mypage_treelist"
+        app:srcCompat="@drawable/mypage_store_previous_icon"
         android:background="@android:color/transparent"
         />
 

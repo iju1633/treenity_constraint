@@ -8,6 +8,7 @@ import com.example.treenity_constraint.data.model.store.StoreResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface MyPageApiService {
 
@@ -29,5 +30,11 @@ interface MyPageApiService {
     // StoreActivity
     @GET("items")
     suspend fun getStoreData() : Response<StoreResponse>
+
+//    @POST("users/1/items")
+//    suspend fun pushItem() :
+
+//    @POST("users/1")
+//    suspend fun changeName() :
 
 }
