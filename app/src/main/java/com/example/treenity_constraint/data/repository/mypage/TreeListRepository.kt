@@ -11,7 +11,6 @@ import javax.inject.Inject
 
 class TreeListRepository @Inject constructor(val retroInstance: MyPageApiService) {
 
-
     // code for recyclerview
     fun makeAPICall(liveTreeList: MutableLiveData<MyTreeResponse>) {
         val retroInstance = MyPageNetworkModule.provideRetrofitInstance()
@@ -29,7 +28,5 @@ class TreeListRepository @Inject constructor(val retroInstance: MyPageApiService
                 liveTreeList.postValue(response.body())
             }
         })
-
     }
-
 }
