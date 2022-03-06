@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     tools:context=".ui.mypage.MyPageActivity"
     android:fillViewport="true"
     android:layout_below="@+id/toolbar"
-    android:background="#FEFAFA">
+    android:background="#FEFAFA"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/swipe_refresh">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -355,6 +359,7 @@
 
 
     </ScrollView>
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>
+
 

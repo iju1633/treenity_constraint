@@ -138,7 +138,7 @@
         android:layout_marginTop="600dp"
         android:layout_marginStart="170dp"
 
-        android:text="Water is replenished every day"
+        android:text="You can only buy up to 3 per day"
 
         android:textSize="15sp"/>
 

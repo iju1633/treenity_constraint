@@ -47,7 +47,7 @@ class TreeListAdapter: RecyclerView.Adapter<TreeListAdapter.MyViewHolder>() {
         // 일반적으로 onBindViewHolder가 아닌 Recycler Holder 클래스 내부에 별도의 bind 함수를 구현하여 바인딩을 진행합니다! 한번 알아보시면 도움이 될 것 같아요! --> resolved!
         fun bind(tree: MyTreeItem) {
             binding.itemName.text = tree.item.name
-            ("Planted Date : " + tree.createdDate).also { binding.plantedDate.text = it }
+            ("Planted Date : " + tree.createdDate).also { binding.plantedDate.text = it.substring(0,25) }
             ("LEV : " + tree.level.toString()).also { binding.level.text = it } // assignment 방식으로 concat 하는 것을 권장(ide)
             ("EXP : " + tree.bucket.toString()).also { binding.exp.text = it }
 

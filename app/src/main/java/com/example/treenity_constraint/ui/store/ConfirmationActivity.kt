@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import com.example.treenity_constraint.R
-import com.example.treenity_constraint.data.model.store.PostItem
+import com.example.treenity_constraint.data.model.store.StoreItem
 import com.example.treenity_constraint.databinding.StoreConfirmationMainBinding
 import com.example.treenity_constraint.di.NetWorkModule
 import com.example.treenity_constraint.ui.store.viewmodel.SeedsViewModel
@@ -80,18 +80,19 @@ class ConfirmationActivity : AppCompatActivity() {
                 // TODO : 여기에서 /users/{id}/items 로 post 요청할 것 : parameter -> itemId
 
                 val apiInterface = NetWorkModule.provideRetrofitInstance()
-                val call = apiInterface.pushTreeItem(itemId) // 여기에 buy 하는 item 의 id 를 넣어야 함
+                val item = StoreItem(0,"", "", itemId, "") // 구매한 item 의 id 를 넣어 객체 생성
+                val call = apiInterface.pushTreeItem(item) // body 로 전달
                 
                 // test
                 Log.d("tag", "onCreate: id of your Item you just bought is $itemId")
                 
-                call.enqueue(object : retrofit2.Callback<PostItem> {
-                    override fun onResponse(call: Call<PostItem>, response: Response<PostItem>) {
+                call.enqueue(object : retrofit2.Callback<StoreItem> {
+                    override fun onResponse(call: Call<StoreItem>, response: Response<StoreItem>) {
                         Log.d("tag", "onResponse: " + response.code())
 //                        Log.d("tag", "onResponse: " + response.body()!!.itemName)
                     }
 
-                    override fun onFailure(call: Call<PostItem>, t: Throwable) {
+                    override fun onFailure(call: Call<StoreItem>, t: Throwable) {
                         Log.d("tag", "onFailure: " + t.message)
                     }
 

@@ -3,8 +3,12 @@ package com.example.treenity_constraint.ui.mypage
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.treenity_constraint.data.model.mypage.tree.Item
 import com.example.treenity_constraint.data.repository.mypage.WalkLogRepository
@@ -21,6 +25,7 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.internal.notifyAll
 
 ///////////////// 마이페이지 /////////////////
 @AndroidEntryPoint
@@ -91,6 +96,33 @@ class MyPageActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.swipeRefresh.setDistanceToTriggerSync(300) // 터치 민감도 조절
+
+        // 스크롤 업 대신에 리프레쉬 이벤트가 트리거 되는걸 방지하기 위함
+        binding.swipeRefresh.viewTreeObserver.addOnScrollChangedListener {
+            binding.swipeRefresh.isEnabled = (binding.swipeRefresh.scrollY == 0)
+        }
+        
+        binding.swipeRefresh.setOnRefreshListener {
+
+            // 아래로 스와이핑 후에 1초뒤에 갱신되는 아이콘 없애는 코드
+            Handler(Looper.getMainLooper()).postDelayed({
+                if(binding.swipeRefresh.isRefreshing) binding.swipeRefresh.isRefreshing = false
+            }, 1000)
+
+            // 한번 스크롤 할 때마다 모든 정보 새로 고침
+
+            // user 부분의 사용자 이름 갱신
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+            val name = sharedPreferences.getString("signature", "")
+            binding.username.text = name
+
+            // test
+            Log.d("tag", "onResume: your new name is $name")
+        }
+    }
 
     private fun setBarChart() {
 
@@ -200,7 +232,6 @@ class MyPageActivity : AppCompatActivity() {
         })
     }
 
-
     private fun getMyUserData() {
         userViewModel.userResp.observe(this, { user->
 
@@ -215,6 +246,7 @@ class MyPageActivity : AppCompatActivity() {
 
     private fun getMyTreeData() {
         myTreeViewModel.responseMyTree.observe(this, { listMyTrees ->
+
             myTreeAdapter.trees = listMyTrees
         })
     }

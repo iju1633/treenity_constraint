@@ -3,7 +3,7 @@ package com.example.treenity_constraint.data.api
 import com.example.treenity_constraint.data.model.mypage.tree.MyTreeResponse
 import com.example.treenity_constraint.data.model.mypage.user.User
 import com.example.treenity_constraint.data.model.mypage.walklog.WalkLog
-import com.example.treenity_constraint.data.model.store.PostItem
+import com.example.treenity_constraint.data.model.store.StoreItem
 import com.example.treenity_constraint.data.model.store.StoreResponse
 import retrofit2.Call
 import retrofit2.Response
@@ -32,13 +32,11 @@ interface MyPageApiService { // 로그인 액티비티 개발 완료 됨에 따�
 
     // 상점에서 아이템 구매했을 때 POST
     @Headers("Content-Type: application/json")
-    @FormUrlEncoded
     @POST("users/1/items")
-    fun pushTreeItem(@Field("itemId") id: Int) : Call<PostItem>
+    fun pushTreeItem(@Body postItem: StoreItem) : Call<StoreItem>
 
-    // 환경설정 페이지에서 이름 바꿨을 때 POST
+    // 환경설정 페이지에서 이름 바꿨을 때 PUT
     @Headers("Content-Type: application/json")
-    @FormUrlEncoded
-    @POST("users/1")
-    fun changeName(@Field("userId") id: Int, @Field("username") name: String) : Call<User>
+    @PUT("users/1")
+    fun changeName(@Body user: User) : Call<User>
 }

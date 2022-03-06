@@ -1,14 +1,18 @@
 package com.example.treenity_constraint.ui.mypage
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.example.treenity_constraint.R
 import com.example.treenity_constraint.data.model.mypage.user.User
 import com.example.treenity_constraint.di.NetWorkModule
+import com.example.treenity_constraint.ui.store.ConfirmationActivity
+import com.example.treenity_constraint.ui.store.StoreActivity
 import retrofit2.Call
 import retrofit2.Response
 
@@ -40,23 +44,29 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         // 닉네임 변경되었을 때
         if(key == "signature") {
-            val prefs = sharedPreferences?.getString(key, "garfield") // user 가 작성한 String 값 가져와서
+            val nextIntent = Intent(this@SettingsActivity, MyPageActivity::class.java)
+            val newName = sharedPreferences?.getString(key,"no name") // user 가 작성한 String 값 가져와서
+            // nextIntent.putExtra("name", newName.toString()) // MyPageActivity 에 값을 전달해주고(MyPageActivity 에서 scroll down 시 이름 새로고침 구현할 때 필요)
 
             // post
             val apiInterface = NetWorkModule.provideRetrofitInstance()
-            val call = prefs?.let { apiInterface.changeName(1, it) } // 여기에 user 의 id 를 넣어야 함 -> 로그인 액티비티에서 로그인할 때 sharedPreference 로 저장하게 할 것!
+            val user = newName?.let { User(it, 0, 0, 0) } // 작성된 새로운 이름으로 객체 생성
+            val call = user?.let { apiInterface.changeName(it) } // body 로 전달
+            
             // test
-            Log.d("tag", "onCreate: your new name is $prefs")
+            Log.d("tag", "onCreate: your new name is $newName")
+            
             call?.enqueue(object : retrofit2.Callback<User> {
                 override fun onResponse(call: Call<User>, response: Response<User>) {
                     Log.d("tag", "onResponse: " + response.code())
+                    // Toast.makeText(applicationContext, "Please refresh My Page to see the changes",)
                 }
 
                 override fun onFailure(call: Call<User>, t: Throwable) {
                     Log.d("tag", "onFailure: " + t.message)
                 }
-
             })
+
         }
 
         // push 알람 설정되었을 때
