@@ -10,13 +10,13 @@ import javax.inject.Inject
 @HiltViewModel
 class TreeListViewModel @Inject constructor(val repository: TreeListRepository): ViewModel() {
 
-    var liveTreeListItemList: MutableLiveData<MyTreeResponse> = MutableLiveData()
+    var liveData: MutableLiveData<MyTreeResponse> = MutableLiveData()
 
     fun getLiveDataObserver(): MutableLiveData<MyTreeResponse> {
-        return liveTreeListItemList
+        return liveData
     }
 
     fun loadListOfData() {
-        repository.makeAPICall(liveTreeListItemList)
+        repository.makeAPICall(liveData)
     }
 }

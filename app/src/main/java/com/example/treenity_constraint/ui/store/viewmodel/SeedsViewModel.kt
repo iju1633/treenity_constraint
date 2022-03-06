@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SeedsViewModel
+class SeedsViewModel // 물의 경우, recyclerview 로 보여줄 필요가 없기에 viewModel 을 구분지어 개발
 @Inject
 constructor(private val repository: StoreRepository) : ViewModel() {
 
@@ -30,9 +30,9 @@ constructor(private val repository: StoreRepository) : ViewModel() {
 
         repository.getStoreData().let {response ->
 
-            if (response.isSuccessful){ // 아이템은 3개만 보여줄 것
+            if (response.isSuccessful){
 
-                for(i in 1 until response.body()!!.size)
+                for(i in 1 until response.body()!!.size) // 첫 번째 아이템은 물이기에 1부터 index 가 시작
                     seeds.add(response.body()!![i])
 
                 _response.postValue(seeds)

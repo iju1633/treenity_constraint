@@ -11,7 +11,7 @@ import com.example.treenity_constraint.databinding.StoreItemRowBinding
 
 
 
-class StoreAdapter(items: List<StoreItem>) : RecyclerView.Adapter<StoreAdapter.MyViewHolder>() {
+class StoreAdapter(items: List<StoreItem>) : RecyclerView.Adapter<StoreAdapter.StoreViewHolder>() {
 
 
     private val items: List<StoreItem>
@@ -21,7 +21,7 @@ class StoreAdapter(items: List<StoreItem>) : RecyclerView.Adapter<StoreAdapter.M
         this.items = items
     }
 
-    inner class MyViewHolder
+    inner class StoreViewHolder
     constructor(
         val binding: StoreItemRowBinding, listener: OnItemClickListener
     ): RecyclerView.ViewHolder(binding.root) {
@@ -32,7 +32,7 @@ class StoreAdapter(items: List<StoreItem>) : RecyclerView.Adapter<StoreAdapter.M
             }
         }
 
-        fun bind(item: StoreItem) {
+        fun bind(item: StoreItem) { // 아이템에는 사진, 가격, 그리고 이름이 적혀 있음
             (item.name + "   " + item.cost + "P").also { binding.treeNameAndPrice.text = it }
 
             // coil 이미지 로더 사용
@@ -47,12 +47,11 @@ class StoreAdapter(items: List<StoreItem>) : RecyclerView.Adapter<StoreAdapter.M
         fun onItemClick(position: Int)
     }
 
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-
+    fun setOnItemClickListener(listener: OnItemClickListener) { // 아이템을 누르게 되면 아이템 상세 설명 화면으로 전환이 필요하기에 이벤트 등록이 필요함
         mListener = listener
     }
 
-    private val diffCallback = object : DiffUtil.ItemCallback<StoreItem>() {
+    private val diffCallback = object : DiffUtil.ItemCallback<StoreItem>() { // recyclerview 최적화하는 코드
         override fun areItemsTheSame(oldItem: StoreItem, newItem: StoreItem): Boolean {
             return oldItem.itemId == newItem.itemId
         }
@@ -62,15 +61,15 @@ class StoreAdapter(items: List<StoreItem>) : RecyclerView.Adapter<StoreAdapter.M
         }
     }
 
-    private val differ = AsyncListDiffer(this, diffCallback)
+    private val differ = AsyncListDiffer(this, diffCallback) // recyclerview 최적화하는 코드
     var itemList: List<StoreItem>
         get() = differ.currentList
         set(value) {
             differ.submitList(value)
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreViewHolder {
+        return StoreViewHolder(
             StoreItemRowBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             ),
@@ -78,7 +77,7 @@ class StoreAdapter(items: List<StoreItem>) : RecyclerView.Adapter<StoreAdapter.M
         )
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: StoreViewHolder, position: Int) {
         val item = itemList[position]
 
         holder.apply {

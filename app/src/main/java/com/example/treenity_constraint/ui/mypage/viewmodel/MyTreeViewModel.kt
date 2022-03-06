@@ -32,11 +32,11 @@ constructor(private val repository: MyTreeRepository) : ViewModel() {
             // treeId는 1부터 시작하기에 겹치지 않기 위해 0번을 주었고, imagePath의 경우, pinterest 에서 다운다아 ifh 이미지 호스팅을 통해 이미지 주소를 만듦
             val lastItem = MyTreeItem(0, Item("Goto TreeList", "https://ifh.cc/g/eA7BXD.jpg"), 0, 0, "")
 
-            if (response.isSuccessful){ // 아이템은 3개만 보여줄 것
+            if (response.isSuccessful){ // 아이템은 3개만 보여줄 것(3+1)
                 _response.postValue(listOf(response.body()!![0],
                                            response.body()!![1],
                                            response.body()!![2],
-                                           lastItem
+                                           lastItem // 더보기 아이템
                                           )
                                    )
             } else{

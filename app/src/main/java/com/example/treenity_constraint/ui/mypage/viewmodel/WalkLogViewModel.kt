@@ -17,13 +17,12 @@ class WalkLogViewModel constructor(private val repository: WalkLogRepository): V
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.d("tag","Exception handled: ${throwable.localizedMessage}")
     }
-    val loading = MutableLiveData<Boolean>()
+
 
     fun getWalkLog() {
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val response = repository.getWalkLogs()
             withContext(Dispatchers.Main) {
-
 
                 if (response.isSuccessful) {
 
@@ -31,9 +30,9 @@ class WalkLogViewModel constructor(private val repository: WalkLogRepository): V
                     for(i in 7 downTo 1) {
                         item = response.body()!![response.body()!!.size - i]
                         walkLogList.add(item)
+
                         // test
                         Log.d("tag", "getWalkLog : $item")
-
                     }
 
                     walkLogs.postValue(walkLogList)

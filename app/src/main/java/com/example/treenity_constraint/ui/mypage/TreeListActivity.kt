@@ -40,8 +40,7 @@ class TreeListActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         binding.recyclerview.layoutManager = LinearLayoutManager(this)
         recyclerAdapter = TreeListAdapter()
-        binding.recyclerview.adapter =recyclerAdapter
-
+        binding.recyclerview.adapter = recyclerAdapter
     }
 
     private fun initViewModel() {

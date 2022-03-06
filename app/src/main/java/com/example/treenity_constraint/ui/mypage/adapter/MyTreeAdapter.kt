@@ -11,7 +11,7 @@ import com.example.treenity_constraint.data.model.mypage.tree.MyTreeItem
 import com.example.treenity_constraint.databinding.MypageMytreeItemRowBinding
 
 
-class MyTreeRecyclerViewAdapter(items: List<Item>) : RecyclerView.Adapter<MyTreeRecyclerViewAdapter.MyViewHolder>() {
+class MyTreeAdapter(items: List<Item>) : RecyclerView.Adapter<MyTreeAdapter.MyTreeViewHolder>() {
 
 
     private val items: List<Item>
@@ -22,18 +22,18 @@ class MyTreeRecyclerViewAdapter(items: List<Item>) : RecyclerView.Adapter<MyTree
     }
 
 
-    inner class MyViewHolder
+    inner class MyTreeViewHolder
     constructor(
         val binding: MypageMytreeItemRowBinding, listener: OnItemClickListener
     ): RecyclerView.ViewHolder(binding.root) {
 
-        init {
+        init { // cardview 에 id로 card 를 설정해놓은 상태 -> 카드를 click 하면 이벤트가 발생하도록 등록
             binding.card.setOnClickListener {
                 listener.onItemClick(bindingAdapterPosition)
             }
         }
 
-        fun bind(item: Item) {
+        fun bind(item: Item) { // recyclerview 의 아이템에는 나무사진과 이름이 쓰여있음
             binding.treeName.text = item.name
             binding.treeImage.load(item.imagePath)
         }
@@ -44,11 +44,10 @@ class MyTreeRecyclerViewAdapter(items: List<Item>) : RecyclerView.Adapter<MyTree
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
-
         mListener = listener
     }
 
-    private val diffCallback = object : DiffUtil.ItemCallback<MyTreeItem>() {
+    private val diffCallback = object : DiffUtil.ItemCallback<MyTreeItem>() { // 달라지는 부분만 갱신할 수 있도록 recyclerview 최적화하는 코드
         override fun areItemsTheSame(oldItem: MyTreeItem, newItem: MyTreeItem): Boolean {
             return oldItem.treeId == newItem.treeId
         }
@@ -58,15 +57,15 @@ class MyTreeRecyclerViewAdapter(items: List<Item>) : RecyclerView.Adapter<MyTree
         }
     }
 
-    private val differ = AsyncListDiffer(this, diffCallback)
+    private val differ = AsyncListDiffer(this, diffCallback) // 달라지는 부분만 갱신할 수 있도록 recyclerview 최적화하는 코드
     var trees: List<MyTreeItem>
         get() = differ.currentList
         set(value) {
             differ.submitList(value)
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyTreeViewHolder {
+        return MyTreeViewHolder(
             MypageMytreeItemRowBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             ),
@@ -74,7 +73,7 @@ class MyTreeRecyclerViewAdapter(items: List<Item>) : RecyclerView.Adapter<MyTree
         )
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyTreeViewHolder, position: Int) {
         val item = trees[position].item
 
         holder.apply {

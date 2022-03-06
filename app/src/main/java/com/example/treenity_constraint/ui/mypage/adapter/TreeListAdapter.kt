@@ -48,7 +48,7 @@ class TreeListAdapter: RecyclerView.Adapter<TreeListAdapter.MyViewHolder>() {
         fun bind(tree: MyTreeItem) {
             binding.itemName.text = tree.item.name
             ("Planted Date : " + tree.createdDate).also { binding.plantedDate.text = it }
-            ("LEV : " + tree.level.toString()).also { binding.level.text = it } // assignment 방식으로 concat 하는 것을 권장
+            ("LEV : " + tree.level.toString()).also { binding.level.text = it } // assignment 방식으로 concat 하는 것을 권장(ide)
             ("EXP : " + tree.bucket.toString()).also { binding.exp.text = it }
 
             // coil 이미지 로더 사용

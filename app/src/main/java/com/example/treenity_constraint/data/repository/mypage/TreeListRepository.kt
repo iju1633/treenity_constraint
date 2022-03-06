@@ -3,7 +3,7 @@ package com.example.treenity_constraint.data.repository.mypage
 import androidx.lifecycle.MutableLiveData
 import com.example.treenity_constraint.data.api.MyPageApiService
 import com.example.treenity_constraint.data.model.mypage.tree.MyTreeResponse
-import com.example.treenity_constraint.di.MyPageNetworkModule
+import com.example.treenity_constraint.di.NetWorkModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,7 +13,7 @@ class TreeListRepository @Inject constructor(val retroInstance: MyPageApiService
 
     // code for recyclerview
     fun makeAPICall(liveTreeList: MutableLiveData<MyTreeResponse>) {
-        val retroInstance = MyPageNetworkModule.provideRetrofitInstance()
+        val retroInstance = NetWorkModule.provideRetrofitInstance()
         val call  = retroInstance.getTreeData()
 
         call.enqueue(object : Callback<MyTreeResponse> { // 비동기 처리

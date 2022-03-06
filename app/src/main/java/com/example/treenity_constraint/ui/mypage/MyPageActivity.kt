@@ -3,21 +3,15 @@ package com.example.treenity_constraint.ui.mypage
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.treenity_constraint.R
 import com.example.treenity_constraint.data.model.mypage.tree.Item
 import com.example.treenity_constraint.data.repository.mypage.WalkLogRepository
-import com.example.treenity_constraint.databinding.MypageMytreeItemRowBinding
 import com.example.treenity_constraint.databinding.MypageMypageActivityMainBinding
 import com.example.treenity_constraint.databinding.MypageMytreeAlertBinding
-import com.example.treenity_constraint.databinding.MypageSettingsActivityMainBinding
-import com.example.treenity_constraint.di.MyPageNetworkModule
-import com.example.treenity_constraint.ui.mypage.adapter.MyTreeRecyclerViewAdapter
+import com.example.treenity_constraint.di.NetWorkModule
+import com.example.treenity_constraint.ui.mypage.adapter.MyTreeAdapter
 import com.example.treenity_constraint.ui.mypage.viewmodel.MyTreeViewModel
 import com.example.treenity_constraint.ui.mypage.viewmodel.UserViewModel
 import com.example.treenity_constraint.ui.mypage.viewmodel.ViewModelFactory
@@ -25,12 +19,10 @@ import com.example.treenity_constraint.ui.mypage.viewmodel.WalkLogViewModel
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.format.DateTimeFormatter
 
+///////////////// 마이페이지 /////////////////
 @AndroidEntryPoint
 class MyPageActivity : AppCompatActivity() {
 
@@ -42,7 +34,7 @@ class MyPageActivity : AppCompatActivity() {
 
     // My Tree
     private val myTreeViewModel: MyTreeViewModel by viewModels()
-    private lateinit var myTreeRecyclerViewAdapter: MyTreeRecyclerViewAdapter
+    private lateinit var myTreeAdapter: MyTreeAdapter
 
     // Walk Log
     var barEntries = ArrayList<BarEntry>()
@@ -57,8 +49,7 @@ class MyPageActivity : AppCompatActivity() {
 
     private lateinit var binding3: MypageMytreeAlertBinding
 //    lateinit var alertDialog: AlertDialog 나중에 혹시 하자고 할까봐 남겨둠
-
-
+    
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +64,7 @@ class MyPageActivity : AppCompatActivity() {
         getMyUserData()
 
         // WalkLog
-        val walkLogRepository = WalkLogRepository(MyPageNetworkModule.provideRetrofitInstance())
+        val walkLogRepository = WalkLogRepository(NetWorkModule.provideRetrofitInstance())
         walkLogViewModel = ViewModelProvider(this, ViewModelFactory(walkLogRepository)).get(WalkLogViewModel::class.java)
         setBarChart()
 
@@ -84,7 +75,7 @@ class MyPageActivity : AppCompatActivity() {
         setViews()
 
         // 이벤트 등록 : 마지막 아이템을 누르면 나무 목록 리스트 페이지 전환
-        myTreeRecyclerViewAdapter.setOnItemClickListener(object : MyTreeRecyclerViewAdapter.OnItemClickListener {
+        myTreeAdapter.setOnItemClickListener(object : MyTreeAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 if(position == 3) { //
                     val nextIntent = Intent(this@MyPageActivity, TreeListActivity::class.java)
@@ -201,7 +192,7 @@ class MyPageActivity : AppCompatActivity() {
 //                })
                 axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 설정
                 axisLeft.isEnabled = false // 왼쪽 Y축을 안보이게 설정
-                animateY(2000)
+                animateY(2000) // 애니메이션 추가
                 legend.isEnabled = false //차트 범례 설정
 
                 invalidate() // refresh
@@ -224,20 +215,20 @@ class MyPageActivity : AppCompatActivity() {
 
     private fun getMyTreeData() {
         myTreeViewModel.responseMyTree.observe(this, { listMyTrees ->
-            myTreeRecyclerViewAdapter.trees = listMyTrees
+            myTreeAdapter.trees = listMyTrees
         })
     }
 
     private fun setViews() {
         // init adapter
         var item = Item("", "")
-        myTreeRecyclerViewAdapter = MyTreeRecyclerViewAdapter(listOf(item))
+        myTreeAdapter = MyTreeAdapter(listOf(item))
 
         // rv 에 myTreeRecyclerviewAdapter 붙이기
         binding.itemRecycler.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.HORIZONTAL,
             false)
-        binding.itemRecycler.adapter = myTreeRecyclerViewAdapter
+        binding.itemRecycler.adapter = myTreeAdapter
     }
 }

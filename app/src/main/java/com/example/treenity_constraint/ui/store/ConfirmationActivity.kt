@@ -10,13 +10,12 @@ import coil.load
 import com.example.treenity_constraint.R
 import com.example.treenity_constraint.data.model.store.PostItem
 import com.example.treenity_constraint.databinding.StoreConfirmationMainBinding
-import com.example.treenity_constraint.di.MyPageNetworkModule
+import com.example.treenity_constraint.di.NetWorkModule
 import com.example.treenity_constraint.ui.store.viewmodel.SeedsViewModel
 import com.example.treenity_constraint.ui.store.viewmodel.WaterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Response
-import javax.security.auth.callback.Callback
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
@@ -56,7 +55,7 @@ class ConfirmationActivity : AppCompatActivity() {
                         description.text = water[0].description
                         (water[0].cost.toString() + "P").also { cost.text = it }
 
-                        itemId = water[0].itemId
+                        itemId = water[0].itemId // 후에 POST 요청을 위해 필요한 부분
                     }
                 })
             }
@@ -76,14 +75,16 @@ class ConfirmationActivity : AppCompatActivity() {
             builder.setTitle("CONFIRMATION")    // 제목
             builder.setView(layoutInflater.inflate(R.layout.store_confirmation_dialog, null))
 
-            // BUY 버튼 눌렀을 때 이벤트
+            // BUY 버튼 눌렀을 때 이벤트 -> POST 요청
             builder.setPositiveButton("BUY") { dialog, which ->
                 // TODO : 여기에서 /users/{id}/items 로 post 요청할 것 : parameter -> itemId
 
-                val apiInterface = MyPageNetworkModule.provideRetrofitInstance()
+                val apiInterface = NetWorkModule.provideRetrofitInstance()
                 val call = apiInterface.pushTreeItem(itemId) // 여기에 buy 하는 item 의 id 를 넣어야 함
+                
                 // test
                 Log.d("tag", "onCreate: id of your Item you just bought is $itemId")
+                
                 call.enqueue(object : retrofit2.Callback<PostItem> {
                     override fun onResponse(call: Call<PostItem>, response: Response<PostItem>) {
                         Log.d("tag", "onResponse: " + response.code())

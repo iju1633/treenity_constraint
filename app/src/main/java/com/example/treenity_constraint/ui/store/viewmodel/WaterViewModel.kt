@@ -30,7 +30,7 @@ constructor(private val repository: StoreRepository) : ViewModel() {
 
             if (response.isSuccessful){
                 _response.postValue(
-                    listOf(response.body()!![0])
+                    listOf(response.body()!![0]) // 첫 번째 아이템이 bucket 이다
                 )
             } else{
                 Log.d("tag", "getWater Error: ${response.code()}")
