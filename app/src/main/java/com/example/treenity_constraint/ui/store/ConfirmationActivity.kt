@@ -3,6 +3,7 @@ package com.example.treenity_constraint.ui.store
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -77,7 +78,6 @@ class ConfirmationActivity : AppCompatActivity() {
 
             // BUY 버튼 눌렀을 때 이벤트 -> POST 요청
             builder.setPositiveButton("BUY") { dialog, which ->
-                // TODO : 여기에서 /users/{id}/items 로 post 요청할 것 : parameter -> itemId
 
                 val apiInterface = NetWorkModule.provideRetrofitInstance()
                 val item = StoreItem(0,"", "", itemId, "") // 구매한 item 의 id 를 넣어 객체 생성
@@ -88,8 +88,10 @@ class ConfirmationActivity : AppCompatActivity() {
                 
                 call.enqueue(object : retrofit2.Callback<StoreItem> {
                     override fun onResponse(call: Call<StoreItem>, response: Response<StoreItem>) {
-                        Log.d("tag", "onResponse: " + response.code())
-//                        Log.d("tag", "onResponse: " + response.body()!!.itemName)
+                        Log.d("tag", "onResponse: " + response.code()) // 서버 에러 500이 뜨는 경우가 있고, 물을 하루에 3번 이상 살 시, 어떤 에러코드를 response 하는 지 물어볼 것
+//                        Toast.makeText(this@ConfirmationActivity, "Successfully purchased", Toast.LENGTH_SHORT).show()
+//                        if(response.code() == 500)
+//                            Toast.makeText(this@ConfirmationActivity, "You can only buy upto 3 per day", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onFailure(call: Call<StoreItem>, t: Throwable) {
