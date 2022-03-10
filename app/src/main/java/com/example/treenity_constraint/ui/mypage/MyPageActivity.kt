@@ -1,15 +1,25 @@
 package com.example.treenity_constraint.ui.mypage
 
+import android.Manifest
+import android.Manifest.permission.ACTIVITY_RECOGNITION
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.treenity_constraint.StepDetectorService
+import com.example.treenity_constraint.TreenityApplication
 import com.example.treenity_constraint.data.model.mypage.tree.Item
 import com.example.treenity_constraint.data.repository.mypage.WalkLogRepository
 import com.example.treenity_constraint.databinding.MypageMypageActivityMainBinding
@@ -30,6 +40,11 @@ import okhttp3.internal.notifyAll
 ///////////////// 마이페이지 /////////////////
 @AndroidEntryPoint
 class MyPageActivity : AppCompatActivity() {
+
+    // sensor permission
+    private val MY_PERMISSION_ACCESS_ALL = 100
+    @RequiresApi(Build.VERSION_CODES.Q) // api level 29 부터 신체 활동 센서가 달려있음
+    val permission = arrayOf(ACTIVITY_RECOGNITION)
 
     // MyPage main
     private lateinit var binding: MypageMypageActivityMainBinding
@@ -58,6 +73,13 @@ class MyPageActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 걷는 것 인식하기 위한 권한 요청
+        ActivityCompat.requestPermissions(this, permission, MY_PERMISSION_ACCESS_ALL) // 거부 했을 경우, 서비스를 원활하게 사용하지 못함을 Toast 로 띄워주세요 :)
+
+        if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) { // 허용 할 경우, 바로 서비스 on
+            Toast.makeText(this, "Activity Sensor is Activated", Toast.LENGTH_SHORT).show()
+        }
 
         //inflate
         binding = MypageMypageActivityMainBinding.inflate(layoutInflater)
@@ -94,6 +116,23 @@ class MyPageActivity : AppCompatActivity() {
             val nextIntent = Intent(this@MyPageActivity, SettingsActivity::class.java)
             startActivity(nextIntent)
         }
+
+        // 걷기 측정 서비스 등록
+        val intent = Intent(this, StepDetectorService::class.java)
+        startService(intent)
+    }
+
+    // 첫 신체 활동 권한 요청에서 거부를 눌렀을 때
+    override fun onRequestPermissionsResult( requestCode: Int, permissions: Array<out String>, grantResults: IntArray ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode > 0) {
+            if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_DENIED) {
+                Toast.makeText(this@MyPageActivity, "You can address your authorization by clicking setting icon", Toast.LENGTH_SHORT).show()
+            }
+        } else { // 승인은 했다면
+            val intent = Intent(this, StepDetectorService::class.java)
+            startService(intent)
+        }
     }
 
     override fun onResume() {
@@ -106,6 +145,13 @@ class MyPageActivity : AppCompatActivity() {
         }
         
         binding.swipeRefresh.setOnRefreshListener {
+
+            // 새로고침 했을 때 ACTIVITY_RECOGNITION 켜져 있으면 서비스 on
+            if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) {
+
+                val intent = Intent(this, StepDetectorService::class.java)
+                startService(intent)
+            }
 
             // 아래로 스와이핑 후에 1초뒤에 갱신되는 아이콘 없애는 코드
             Handler(Looper.getMainLooper()).postDelayed({

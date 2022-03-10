@@ -13,10 +13,16 @@
     <PreferenceCategory app:title="Advanced">
 
         <SwitchPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:summary="Click to Switch On or Off"
             android:title="Push Alarm"
             app:key="switch" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:summary="Swipe to confirm your permission"
+            android:title="Activity Check"
+            app:key="permission"/>
 
     </PreferenceCategory>
 

@@ -3,6 +3,7 @@
     package="com.example.treenity_constraint">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
 
     <application
         android:name=".TreenityApplication"
@@ -19,14 +20,15 @@
             android:label="@string/title_activity_settings"
             android:parentActivityName=".ui.mypage.MyPageActivity"/>
 
+
         <activity android:name=".ui.mypage.TreeListActivity" />
 
-        <activity android:name=".ui.mypage.MyPageActivity" />
+        <activity android:name=".ui.store.StoreActivity" />
 
         <activity android:name=".ui.store.ConfirmationActivity" />
 
         <activity
-            android:name=".ui.store.StoreActivity"
+            android:name=".ui.mypage.MyPageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +36,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".StepDetectorService"/>
+
     </application>
 
 </manifest>
