@@ -1,7 +1,7 @@
 package com.example.treenity_constraint.ui.mypage
 
-import android.Manifest
 import android.Manifest.permission.ACTIVITY_RECOGNITION
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -16,7 +16,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.preference.CheckBoxPreference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.example.treenity_constraint.R
@@ -25,7 +24,7 @@ import com.example.treenity_constraint.data.model.mypage.user.User
 import com.example.treenity_constraint.di.NetWorkModule
 import retrofit2.Call
 import retrofit2.Response
-import kotlin.system.exitProcess
+
 
 ///////////////// 환경설정 페이지 /////////////////
 class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener{
@@ -58,6 +57,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
     }
 
     // 이벤트 작성 nickname 변경될 때, push 알람 설정 true 되었을 때 서버로 POST 요청보낼 것
+    @SuppressLint("InflateParams")
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
 
@@ -96,11 +96,13 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
         // permission 체크박스 눌렀을 때
         if(key == "permission") {
+            
+            // 다이얼로그
             val builder = AlertDialog.Builder(this)
 
             builder.setIcon(R.drawable.mypage_setting_icon)    // 제목 아이콘
             builder.setTitle("Goto Setting")    // 제목
-            builder.setView(layoutInflater.inflate(R.layout.mypage_goto_application_settings, null))
+            builder.setView(layoutInflater.inflate(R.layout.mypage_goto_application_settings, null)) // null 때문에 @SuppressLint("InflateParams") 붙임(IDE 추천)
 
             builder.setPositiveButton("Go to Permission Settings") { dialog, which ->
                 val intent = Intent()
@@ -111,17 +113,6 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
             }
 
             if(sharedPreferences?.getBoolean(key, false) == true) {
-//                // 이전에 승인 거절한 경우이기 때문에 shouldShowRequestPermissionRationale
-//                if(ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_DENIED) { // permission check
-////                    if (ActivityCompat.shouldShowRequestPermissionRationale( this, ACTIVITY_RECOGNITION)) {
-//                        ActivityCompat.requestPermissions(this, permission, activityPermission) // 거부할 경우, 재요청에도 권한 요청 창이 뜨지 않기에 dialog 창을 띄워 설정하러가기 페이지로 이동시킬 예정
-////                    }
-//                }
-//
-//                // 이미 승인이 되어있는 상태였다면
-//                if(ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) {
-//                    Toast.makeText(this, "Activity Sensor is already Activated", Toast.LENGTH_SHORT).show()
-//                }
     
                 // 권한이 거절된 상태 
                 if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
@@ -143,9 +134,6 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
     }
         
 
-
-    
-
     // ACTIVITY_RECOGNITION 권한 수락/거부 시
     override fun onRequestPermissionsResult( requestCode: Int, permissions: Array<out String>, grantResults: IntArray ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -161,11 +149,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
             }
         }
     }
-
-
-
-
-
+    
     override fun onDestroy() {
         super.onDestroy()
         PreferenceManager.getDefaultSharedPreferences(this)

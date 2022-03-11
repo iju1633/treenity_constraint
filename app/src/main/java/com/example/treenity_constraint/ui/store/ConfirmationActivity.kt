@@ -3,7 +3,6 @@ package com.example.treenity_constraint.ui.store
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -88,7 +87,7 @@ class ConfirmationActivity : AppCompatActivity() {
                 
                 call.enqueue(object : retrofit2.Callback<StoreItem> {
                     override fun onResponse(call: Call<StoreItem>, response: Response<StoreItem>) {
-                        Log.d("tag", "onResponse: " + response.code()) // 서버 에러 500이 뜨는 경우가 있고, 물을 하루에 3번 이상 살 시, 어떤 에러코드를 response 하는 지 물어볼 것
+                        Log.d("tag", "onResponse: " + response.code()) // TODO 서버 에러 500이 뜨는 경우가 있고, 물을 하루에 3번 이상 살 시, 어떤 에러코드를 response 하는 지 물어볼 것
 //                        Toast.makeText(this@ConfirmationActivity, "Successfully purchased", Toast.LENGTH_SHORT).show()
 //                        if(response.code() == 500)
 //                            Toast.makeText(this@ConfirmationActivity, "You can only buy upto 3 per day", Toast.LENGTH_SHORT).show()

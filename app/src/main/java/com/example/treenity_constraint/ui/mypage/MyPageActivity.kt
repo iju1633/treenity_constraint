@@ -149,6 +149,8 @@ class MyPageActivity : AppCompatActivity() {
             // 새로고침 했을 때 ACTIVITY_RECOGNITION 켜져 있으면 서비스 on
             if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) {
 
+                Toast.makeText(this, "Activity Sensor is Activated", Toast.LENGTH_SHORT).show()
+
                 val intent = Intent(this, StepDetectorService::class.java)
                 startService(intent)
             }
