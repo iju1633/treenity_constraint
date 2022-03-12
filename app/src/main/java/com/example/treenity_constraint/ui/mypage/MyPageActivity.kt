@@ -1,6 +1,5 @@
 package com.example.treenity_constraint.ui.mypage
 
-import android.Manifest
 import android.Manifest.permission.ACTIVITY_RECOGNITION
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,8 +17,11 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.example.treenity_constraint.StepDetectorService
-import com.example.treenity_constraint.TreenityApplication
 import com.example.treenity_constraint.data.model.mypage.tree.Item
 import com.example.treenity_constraint.data.repository.mypage.WalkLogRepository
 import com.example.treenity_constraint.databinding.MypageMypageActivityMainBinding
@@ -30,12 +32,13 @@ import com.example.treenity_constraint.ui.mypage.viewmodel.MyTreeViewModel
 import com.example.treenity_constraint.ui.mypage.viewmodel.UserViewModel
 import com.example.treenity_constraint.ui.mypage.viewmodel.ViewModelFactory
 import com.example.treenity_constraint.ui.mypage.viewmodel.WalkLogViewModel
+import com.example.treenity_constraint.utils.MyWorker
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.internal.notifyAll
+import java.util.concurrent.TimeUnit
 
 ///////////////// 마이페이지 /////////////////
 @AndroidEntryPoint
@@ -75,7 +78,7 @@ class MyPageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // 걷는 것 인식하기 위한 권한 요청
-        ActivityCompat.requestPermissions(this, permission, MY_PERMISSION_ACCESS_ALL) // 거부 했을 경우, 서비스를 원활하게 사용하지 못함을 Toast 로 띄워주세요 :)
+        ActivityCompat.requestPermissions(this, permission, MY_PERMISSION_ACCESS_ALL)
 
         if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) { // 허용 할 경우, 바로 서비스 on
             Toast.makeText(this, "Activity Sensor is Activated", Toast.LENGTH_SHORT).show()
@@ -117,9 +120,12 @@ class MyPageActivity : AppCompatActivity() {
             startActivity(nextIntent)
         }
 
-        // 걷기 측정 서비스 등록
-        val intent = Intent(this, StepDetectorService::class.java)
-        startService(intent)
+//        // 걷기 측정 서비스 등록
+//        val intent = Intent(this, StepDetectorService::class.java)
+//        startService(intent)
+        
+        // notification : 원하는 액티비티에 넣을 것
+        workManager()
     }
 
     // 첫 신체 활동 권한 요청에서 거부를 눌렀을 때
@@ -127,11 +133,13 @@ class MyPageActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode > 0) {
             if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_DENIED) {
-                Toast.makeText(this@MyPageActivity, "You can address your authorization by clicking setting icon", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "You can address your authorization by clicking setting icon", Toast.LENGTH_SHORT).show()
+            } else { // 승인은 했다면
+                val intent = Intent(this, StepDetectorService::class.java)
+                startService(intent)
+
+                Toast.makeText(this, "Activity Sensor is Activated", Toast.LENGTH_SHORT).show()
             }
-        } else { // 승인은 했다면
-            val intent = Intent(this, StepDetectorService::class.java)
-            startService(intent)
         }
     }
 
@@ -310,5 +318,29 @@ class MyPageActivity : AppCompatActivity() {
             LinearLayoutManager.HORIZONTAL,
             false)
         binding.itemRecycler.adapter = myTreeAdapter
+    }
+
+    private fun workManager() {
+        val constraints = androidx.work.Constraints.Builder()
+            .setRequiresCharging(false)
+            .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
+            .setRequiresCharging(false)
+            .setRequiresBatteryNotLow(true)
+            .build()
+
+        val myRequest = PeriodicWorkRequest.Builder(
+            MyWorker::class.java,
+            15, // 최소 시간이 15분
+            TimeUnit.MINUTES
+        ).setConstraints(constraints)
+            .build()
+        
+
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+                "my_id",
+                ExistingPeriodicWorkPolicy.KEEP,
+                myRequest
+            )
     }
 }
