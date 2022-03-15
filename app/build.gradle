@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.treenity_constraint"
-        minSdk 26
+        minSdk 29
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -86,9 +86,7 @@ dependencies {
     // MPAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
-    //concatAdapter
-    implementation "androidx.recyclerview:recyclerview:1.3.0-alpha01"
-
+    // card view
     implementation "androidx.cardview:cardview:1.0.0"
 
     // settings
@@ -99,5 +97,8 @@ dependencies {
 
     // work manager
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
+
+    // data binding 가끔 에러남
+    kapt 'com.android.databinding:compiler:3.1.4'
 
 }

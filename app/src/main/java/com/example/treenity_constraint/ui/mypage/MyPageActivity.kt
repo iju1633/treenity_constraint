@@ -22,6 +22,7 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.example.treenity_constraint.StepDetectorService
+import com.example.treenity_constraint.TreenityApplication
 import com.example.treenity_constraint.data.model.mypage.tree.Item
 import com.example.treenity_constraint.data.repository.mypage.WalkLogRepository
 import com.example.treenity_constraint.databinding.MypageMypageActivityMainBinding
@@ -32,6 +33,7 @@ import com.example.treenity_constraint.ui.mypage.viewmodel.MyTreeViewModel
 import com.example.treenity_constraint.ui.mypage.viewmodel.UserViewModel
 import com.example.treenity_constraint.ui.mypage.viewmodel.ViewModelFactory
 import com.example.treenity_constraint.ui.mypage.viewmodel.WalkLogViewModel
+import com.example.treenity_constraint.ui.store.StoreActivity
 import com.example.treenity_constraint.utils.MyWorker
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
@@ -120,6 +122,12 @@ class MyPageActivity : AppCompatActivity() {
             startActivity(nextIntent)
         }
 
+        // 이벤트 등록 : 설정 아이콘 누르면 상점 페이지로 전환
+        binding.store.setOnClickListener {
+            val nextIntent = Intent(this@MyPageActivity, StoreActivity::class.java)
+            startActivity(nextIntent)
+        }
+
 //        // 걷기 측정 서비스 등록
 //        val intent = Intent(this, StepDetectorService::class.java)
 //        startService(intent)
@@ -154,14 +162,14 @@ class MyPageActivity : AppCompatActivity() {
         
         binding.swipeRefresh.setOnRefreshListener {
 
-            // 새로고침 했을 때 ACTIVITY_RECOGNITION 켜져 있으면 서비스 on
-            if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) {
-
-                Toast.makeText(this, "Activity Sensor is Activated", Toast.LENGTH_SHORT).show()
-
-                val intent = Intent(this, StepDetectorService::class.java)
-                startService(intent)
-            }
+            // 새로고침 했을 때 ACTIVITY_RECOGNITION 켜져 있으면 서비스 on --> 바로 activated 메시지 띄우기로 설정(SettingsActivity - onStart method)
+//            if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) {
+//
+//                Toast.makeText(this, "Activity Sensor is Activated", Toast.LENGTH_SHORT).show()
+//
+//                val intent = Intent(this, StepDetectorService::class.java)
+//                startService(intent)
+//            }
 
             // 아래로 스와이핑 후에 1초뒤에 갱신되는 아이콘 없애는 코드
             Handler(Looper.getMainLooper()).postDelayed({
@@ -321,20 +329,8 @@ class MyPageActivity : AppCompatActivity() {
     }
 
     private fun workManager() {
-        val constraints = androidx.work.Constraints.Builder()
-            .setRequiresCharging(false)
-            .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
-            .setRequiresCharging(false)
-            .setRequiresBatteryNotLow(true)
-            .build()
 
-        val myRequest = PeriodicWorkRequest.Builder(
-            MyWorker::class.java,
-            15, // 최소 시간이 15분
-            TimeUnit.MINUTES
-        ).setConstraints(constraints)
-            .build()
-        
+        val myRequest = TreenityApplication.myRequest.build()
 
         WorkManager.getInstance(this)
             .enqueueUniquePeriodicWork(

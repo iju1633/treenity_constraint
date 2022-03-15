@@ -28,7 +28,7 @@ class StoreAdapter(items: List<StoreItem>) : RecyclerView.Adapter<StoreAdapter.S
 
         init {
             binding.item.setOnClickListener {
-                listener.onItemClick(bindingAdapterPosition)
+                listener.onItemClick(adapterPosition)
             }
         }
 

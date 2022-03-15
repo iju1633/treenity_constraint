@@ -29,7 +29,7 @@ class MyTreeAdapter(items: List<Item>) : RecyclerView.Adapter<MyTreeAdapter.MyTr
 
         init { // cardview 에 id로 card 를 설정해놓은 상태 -> 카드를 click 하면 이벤트가 발생하도록 등록
             binding.card.setOnClickListener {
-                listener.onItemClick(bindingAdapterPosition)
+                listener.onItemClick(adapterPosition)
             }
         }
 

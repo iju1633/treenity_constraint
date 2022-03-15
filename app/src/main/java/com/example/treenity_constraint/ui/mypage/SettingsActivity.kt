@@ -2,6 +2,7 @@ package com.example.treenity_constraint.ui.mypage
 
 import android.Manifest.permission.ACTIVITY_RECOGNITION
 import android.annotation.SuppressLint
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -18,12 +19,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.WorkManager
 import com.example.treenity_constraint.R
 import com.example.treenity_constraint.StepDetectorService
+import com.example.treenity_constraint.TreenityApplication
 import com.example.treenity_constraint.data.model.mypage.user.User
 import com.example.treenity_constraint.di.NetWorkModule
+import com.example.treenity_constraint.utils.MyWorker
 import retrofit2.Call
 import retrofit2.Response
+import java.util.*
 
 
 ///////////////// 환경설정 페이지 /////////////////
@@ -48,6 +54,14 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
             PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this)
 
+    }
+
+    override fun onStart() { // 따로 앱 설정에 가서 권한 승인을 준 경우 -> scroll down 해서 확인할 필요 없이 바로 센서가 작동한다는 메시지 띄움
+        super.onStart()
+
+        if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Activity Sensor is Activated", Toast.LENGTH_SHORT).show()
+        }
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
@@ -88,9 +102,22 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
         // push 알람 설정되었을 때
         if(key == "switch") {
-            // TODO : 푸쉬 알람 띄우기
-            if(sharedPreferences?.getBoolean(key, false) == true) {
-                
+            // TODO : 푸쉬 알람 switch off 하면 푸쉬 알람 설정 없앰
+            if(sharedPreferences?.getBoolean(key, false) == false) {
+
+                val workId = TreenityApplication.myRequest.build().id
+                WorkManager.getInstance(this).cancelWorkById(workId)
+
+                Toast.makeText(this@SettingsActivity, "Push Alarm OFF", Toast.LENGTH_SHORT).show()
+            } else {
+
+                WorkManager.getInstance(this)
+                    .enqueueUniquePeriodicWork(
+                        "my_id",
+                        ExistingPeriodicWorkPolicy.KEEP,
+                        TreenityApplication.myRequest.build()
+                    )
+                Toast.makeText(this@SettingsActivity, "Push Alarm ON", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -101,10 +128,10 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
             val builder = AlertDialog.Builder(this)
 
             builder.setIcon(R.drawable.mypage_setting_icon)    // 제목 아이콘
-            builder.setTitle("Goto Setting")    // 제목
+            builder.setTitle("AUTHORIZATION")    // 제목
             builder.setView(layoutInflater.inflate(R.layout.mypage_goto_application_settings, null)) // null 때문에 @SuppressLint("InflateParams") 붙임(IDE 추천)
 
-            builder.setPositiveButton("Go to Permission Settings") { dialog, which ->
+            builder.setPositiveButton("GO To APP SETTINGS") { dialog, which ->
                 val intent = Intent()
                 intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                 val uri = Uri.fromParts("package", packageName, null)
@@ -139,10 +166,10 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == activityPermission) {
             if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Activity Permission Confirmed", Toast.LENGTH_SHORT).show()
 
                 val intent = Intent(this, StepDetectorService::class.java)
                 startService(intent)
+
                 Toast.makeText(this, "Activity Permission Activated", Toast.LENGTH_SHORT).show()
             } else { // 거부하기를 눌렀다면
                 Toast.makeText(this, "Activity Permission Denied", Toast.LENGTH_SHORT).show()

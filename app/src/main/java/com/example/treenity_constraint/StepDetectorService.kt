@@ -3,6 +3,7 @@ package com.example.treenity_constraint
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -10,6 +11,8 @@ import android.hardware.SensorManager
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
+import androidx.preference.PreferenceManager
+import com.example.treenity_constraint.databinding.MypageMypageActivityMainBinding
 
 
 class StepDetectorService : Service(), SensorEventListener {
@@ -43,10 +46,23 @@ class StepDetectorService : Service(), SensorEventListener {
             }
         }
         // 리셋 안된 값 + 현재값 - 리셋 안된 값
-        val mSteps = sensor!!.values[0].toInt() - stepsBeforeDetection
+        var mSteps = sensor!!.values[0].toInt() - stepsBeforeDetection
+
+        // 100 넘었을 때 100단위로 잘라서 저장할 것 + sharedPreference
+        // 안 넘었을 경우, 그대로 저장
+        if(mSteps >= 100) {
+            mSteps = (mSteps / 100) * 100
+            TreenityApplication.steps = mSteps
+
+            val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
+            val editor: SharedPreferences.Editor = sharedPref.edit()
+
+            editor.putInt("steps", mSteps) // steps 이라는 키워드로 저장
+        }
 
         TreenityApplication.steps = mSteps
 
+        // 로그 기록용
         Log.d("tag", "onSensorChanged: your step feature is ${TreenityApplication.steps}")
     }
 

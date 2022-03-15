@@ -47,7 +47,7 @@ class MyWorker(context: Context, workerParameters: WorkerParameters) : Worker(co
         )
             .setSmallIcon(R.drawable.store_tree_icon)
             .setContentTitle("Treenity Alarm")
-            .setContentText("There are ~ trees within ~M around") // text 안의 ~는 각각 변수와 숫자로 대입해주세요 :)
+            .setContentText("There are ~ trees within ~M") // text 안의 ~는 각각 변수와 숫자로 대입해주세요 :)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
