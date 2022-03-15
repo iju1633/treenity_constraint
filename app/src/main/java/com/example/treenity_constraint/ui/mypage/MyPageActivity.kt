@@ -48,7 +48,6 @@ class MyPageActivity : AppCompatActivity() {
 
     // sensor permission
     private val MY_PERMISSION_ACCESS_ALL = 100
-    @RequiresApi(Build.VERSION_CODES.Q) // api level 29 부터 신체 활동 센서가 달려있음
     val permission = arrayOf(ACTIVITY_RECOGNITION)
 
     // MyPage main
