@@ -2,17 +2,15 @@ package com.example.treenity_constraint.ui.mypage
 
 import android.Manifest.permission.ACTIVITY_RECOGNITION
 import android.annotation.SuppressLint
-import android.app.PendingIntent
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.Gravity
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -20,16 +18,18 @@ import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.example.treenity_constraint.R
 import com.example.treenity_constraint.StepDetectorService
-import com.example.treenity_constraint.TreenityApplication
 import com.example.treenity_constraint.data.model.mypage.user.User
 import com.example.treenity_constraint.di.NetWorkModule
 import com.example.treenity_constraint.utils.MyWorker
 import retrofit2.Call
 import retrofit2.Response
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 ///////////////// 환경설정 페이지 /////////////////
@@ -38,6 +38,18 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
     // sensor permission
     private val activityPermission = 100
     val permission = arrayOf(ACTIVITY_RECOGNITION)
+
+    private val constraints = androidx.work.Constraints.Builder()
+        .setRequiresCharging(false)
+        .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
+        .setRequiresBatteryNotLow(true)
+        .build()
+
+    private val alarmRequest = PeriodicWorkRequest.Builder(
+        MyWorker::class.java,
+        15, // 최소 시간이 15분 -> TODO 나중에 1시간으로 설정할 것
+        TimeUnit.MINUTES
+    ).setConstraints(constraints).build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,13 +67,13 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
     }
 
-    override fun onStart() { // 따로 앱 설정에 가서 권한 승인을 준 경우 -> scroll down 해서 확인할 필요 없이 바로 센서가 작동한다는 메시지 띄움
-        super.onStart()
-
-        if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Activity Sensor is Activated", Toast.LENGTH_SHORT).show()
-        }
-    }
+//    override fun onStart() { // 따로 앱 설정에 가서 권한 승인을 준 경우 -> scroll down 해서 확인할 필요 없이 바로 센서가 작동한다는 메시지 띄움
+//        super.onStart()
+//
+//        if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) {
+//            Toast.makeText(this, "Activity Sensor is Activated", Toast.LENGTH_SHORT).show()
+//        }
+//    }
 
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -88,7 +100,6 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
             call?.enqueue(object : retrofit2.Callback<User> {
                 override fun onResponse(call: Call<User>, response: Response<User>) {
                     Log.d("tag", "onResponse: " + response.code())
-                    Toast.makeText(this@SettingsActivity, "Please refresh My Page to see the changes", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onFailure(call: Call<User>, t: Throwable) {
@@ -96,25 +107,27 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
                 }
             })
 
+            val message = Toast.makeText(this, "New Name has been successfully saved", Toast.LENGTH_SHORT)
+            message.setGravity(Gravity.BOTTOM, 0, 0) // TODO 메시지가 이상하게 중간에 뜸
+            message.show()
         }
 
         // push 알람 설정되었을 때
         if(key == "switch") {
-            // TODO : 푸쉬 알람 switch off 하면 푸쉬 알람 설정 없앰
+
             if(sharedPreferences?.getBoolean(key, false) == false) {
 
-                val workId = TreenityApplication.myRequest.build().id
-                WorkManager.getInstance(this).cancelWorkById(workId)
+                WorkManager.getInstance(this).cancelAllWork()
 
                 Toast.makeText(this@SettingsActivity, "Push Alarm OFF", Toast.LENGTH_SHORT).show()
             } else {
 
-                WorkManager.getInstance(this)
-                    .enqueueUniquePeriodicWork(
-                        "my_id",
-                        ExistingPeriodicWorkPolicy.KEEP,
-                        TreenityApplication.myRequest.build()
-                    )
+                WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                    "alarm",
+                    ExistingPeriodicWorkPolicy.REPLACE,
+                    alarmRequest
+                )
+
                 Toast.makeText(this@SettingsActivity, "Push Alarm ON", Toast.LENGTH_SHORT).show()
             }
         }

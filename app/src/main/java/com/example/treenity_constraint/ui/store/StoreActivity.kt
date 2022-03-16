@@ -51,14 +51,8 @@ class StoreActivity : AppCompatActivity() {
             }
         })
 
-        // point 와 buckets
-        userViewModel.userResp.observe(this, { user->
-
-            binding.apply {
-                (user.point.toString() + "P").also { point.text = it }
-                ("X " + user.buckets.toString()).also { bucket.text = it }
-            }
-        })
+        // point 와 buckets 연결
+        setPointAndBucket()
 
         // 이벤트 등록 : Seeds의 아이템을 누르면, 해당 아이템의 index 를 상세페이지로 전달해줌
         storeAdapter.setOnItemClickListener(object : StoreAdapter.OnItemClickListener {
@@ -67,6 +61,7 @@ class StoreActivity : AppCompatActivity() {
                 val nextIntent = Intent(this@StoreActivity, ConfirmationActivity::class.java)
                 nextIntent.putExtra("index", position) // item list 의 index 를 넘겨준다!
                 startActivity(nextIntent)
+                finish()
             }
         })
 
@@ -75,20 +70,32 @@ class StoreActivity : AppCompatActivity() {
 
             val intent = Intent(this@StoreActivity, ConfirmationActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         // 유저가 보유한 나무 목록을 보여주는 페이지의 좌측 상단 뒤로가기 아이콘을 누르면 마이페이지 창으로 전환됨
         binding.gotoAr.setOnClickListener {
             // val intent = Intent(this, ArActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
+    }
+
+    private fun setPointAndBucket() {
+        userViewModel.userResp.observe(this, { user->
+
+            binding.apply {
+                (user.point.toString() + "P").also { point.text = it }
+                ("X " + user.buckets.toString()).also { bucket.text = it }
+            }
+        })
     }
 
     // adapter 부착
     private fun initRecyclerView() {
         // init adapter
-        var item = StoreItem(0, "", "", 0, "")
+        val item = StoreItem(0, "", "", 0, "")
         storeAdapter = StoreAdapter(listOf(item))
 
         binding.storeRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)

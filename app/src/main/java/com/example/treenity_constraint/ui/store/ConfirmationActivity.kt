@@ -9,8 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import com.example.treenity_constraint.R
 import com.example.treenity_constraint.data.model.store.StoreItem
+import com.example.treenity_constraint.databinding.StoreActivityMainBinding
 import com.example.treenity_constraint.databinding.StoreConfirmationMainBinding
 import com.example.treenity_constraint.di.NetWorkModule
+import com.example.treenity_constraint.ui.mypage.viewmodel.UserViewModel
 import com.example.treenity_constraint.ui.store.viewmodel.SeedsViewModel
 import com.example.treenity_constraint.ui.store.viewmodel.WaterViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,14 +24,17 @@ import kotlin.properties.Delegates
 class ConfirmationActivity : AppCompatActivity() {
 
     private lateinit var binding : StoreConfirmationMainBinding
+    private lateinit var binding2 : StoreActivityMainBinding
     private val seedsViewModel: SeedsViewModel by viewModels()
     private val waterViewModel: WaterViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
     private var itemId by Delegates.notNull<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = StoreConfirmationMainBinding.inflate(layoutInflater)
+        binding2 = StoreActivityMainBinding.inflate(layoutInflater)
 
 
         // 상세페이지의 component 와 연결
@@ -63,10 +68,11 @@ class ConfirmationActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        binding.gotoStore.setOnClickListener {
-            val intent = Intent(this@ConfirmationActivity, StoreActivity::class.java)
-            startActivity(intent)
-        }
+//        binding.gotoStore.setOnClickListener { // 뒤로가기 버튼
+//            val intent = Intent(this@ConfirmationActivity, StoreActivity::class.java)
+//            startActivity(intent)
+//        }
+
 
         binding.bringConfirmation.setOnClickListener {
             val builder = AlertDialog.Builder(this)
@@ -91,10 +97,20 @@ class ConfirmationActivity : AppCompatActivity() {
 //                        Toast.makeText(this@ConfirmationActivity, "Successfully purchased", Toast.LENGTH_SHORT).show()
 //                        if(response.code() == 500)
 //                            Toast.makeText(this@ConfirmationActivity, "You can only buy upto 3 per day", Toast.LENGTH_SHORT).show()
+                        
+                        // point 와 bucket 데이터 갱신
+                        userViewModel.userResp.observe(this@ConfirmationActivity, { user->
+
+                            binding2.apply {
+                                (user.point.toString() + "P").also { point.text = it }
+                                ("X " + user.buckets.toString()).also { bucket.text = it }
+                            }
+                        })
                     }
 
                     override fun onFailure(call: Call<StoreItem>, t: Throwable) {
                         Log.d("tag", "onFailure: " + t.message)
+                        finish()
                     }
 
                 })
@@ -102,6 +118,7 @@ class ConfirmationActivity : AppCompatActivity() {
                 // 상점페이지로 화면 전환
                 val intent = Intent(this@ConfirmationActivity, StoreActivity::class.java)
                 startActivity(intent)
+                finish()
             }
 
             // Return 버튼 추가

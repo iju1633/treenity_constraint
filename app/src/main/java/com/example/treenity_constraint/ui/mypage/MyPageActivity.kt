@@ -108,7 +108,7 @@ class MyPageActivity : AppCompatActivity() {
         // 이벤트 등록 : 마지막 아이템을 누르면 나무 목록 리스트 페이지 전환
         myTreeAdapter.setOnItemClickListener(object : MyTreeAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                if(position == 3) { //
+                if(position == 3) { // 마지막 아이템
                     val nextIntent = Intent(this@MyPageActivity, TreeListActivity::class.java)
                     startActivity(nextIntent)
                 }
@@ -131,8 +131,8 @@ class MyPageActivity : AppCompatActivity() {
 //        val intent = Intent(this, StepDetectorService::class.java)
 //        startService(intent)
         
-        // notification : 원하는 액티비티에 넣을 것
-        workManager()
+        // notification : 원하는 액티비티에 넣을 것 -> 설정에서 선택할 수 있도록 하고 default 값은 true 로!
+//        workManager()
     }
 
     // 첫 신체 활동 권한 요청에서 거부를 눌렀을 때
@@ -152,39 +152,45 @@ class MyPageActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        binding.swipeRefresh.setDistanceToTriggerSync(300) // 터치 민감도 조절
 
-        // 스크롤 업 대신에 리프레쉬 이벤트가 트리거 되는걸 방지하기 위함
-        binding.swipeRefresh.viewTreeObserver.addOnScrollChangedListener {
-            binding.swipeRefresh.isEnabled = (binding.swipeRefresh.scrollY == 0)
-        }
-        
-        binding.swipeRefresh.setOnRefreshListener {
-
-            // 새로고침 했을 때 ACTIVITY_RECOGNITION 켜져 있으면 서비스 on --> 바로 activated 메시지 띄우기로 설정(SettingsActivity - onStart method)
-//            if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) {
-//
-//                Toast.makeText(this, "Activity Sensor is Activated", Toast.LENGTH_SHORT).show()
-//
-//                val intent = Intent(this, StepDetectorService::class.java)
-//                startService(intent)
-//            }
-
-            // 아래로 스와이핑 후에 1초뒤에 갱신되는 아이콘 없애는 코드
-            Handler(Looper.getMainLooper()).postDelayed({
-                if(binding.swipeRefresh.isRefreshing) binding.swipeRefresh.isRefreshing = false
-            }, 1000)
-
-            // 한번 스크롤 할 때마다 모든 정보 새로 고침
-
-            // user 부분의 사용자 이름 갱신
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-            val name = sharedPreferences.getString("signature", "")
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val name = sharedPreferences.getString("signature", "no name")
+        if(name != "no name")
             binding.username.text = name
 
-            // test
-            Log.d("tag", "onResume: your new name is $name")
-        }
+        // ArActivity 에서 사용자에게 요구하는 조작법이 많을 것이므로 이 페이지에서까지 조작법이 다양하면 안된다고 생각했다!
+        // TODO 이야기 나눠보고 layout 파일에서도 wipe 지우고 gradle 에서도 없앨 것
+//        binding.swipeRefresh.setDistanceToTriggerSync(300) // 터치 민감도 조절
+//
+//        // 스크롤 업 대신에 리프레쉬 이벤트가 트리거 되는걸 방지하기 위함
+//        binding.swipeRefresh.viewTreeObserver.addOnScrollChangedListener {
+//            binding.swipeRefresh.isEnabled = (binding.swipeRefresh.scrollY == 0)
+//        }
+//
+//        binding.swipeRefresh.setOnRefreshListener {
+//
+//            // 새로고침 했을 때 ACTIVITY_RECOGNITION 켜져 있으면 서비스 on --> 바로 activated 메시지 띄우기로 설정(SettingsActivity - onStart method)
+////            if (ContextCompat.checkSelfPermission(this, ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) {
+////
+////                Toast.makeText(this, "Activity Sensor is Activated", Toast.LENGTH_SHORT).show()
+////
+////                val intent = Intent(this, StepDetectorService::class.java)
+////                startService(intent)
+////            }
+//
+//            // 아래로 스와이핑 후에 1초뒤에 갱신되는 아이콘 없애는 코드
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                if(binding.swipeRefresh.isRefreshing) binding.swipeRefresh.isRefreshing = false
+//            }, 1000)
+//
+//            // user 부분의 사용자 이름 갱신
+//            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+//            val name = sharedPreferences.getString("signature", "")
+//            binding.username.text = name
+//
+//            // test
+//            Log.d("tag", "onResume: your new name is $name")
+//        }
     }
 
     private fun setBarChart() {
@@ -327,15 +333,26 @@ class MyPageActivity : AppCompatActivity() {
         binding.itemRecycler.adapter = myTreeAdapter
     }
 
-    private fun workManager() {
-
-        val myRequest = TreenityApplication.myRequest.build()
-
-        WorkManager.getInstance(this)
-            .enqueueUniquePeriodicWork(
-                "my_id",
-                ExistingPeriodicWorkPolicy.KEEP,
-                myRequest
-            )
-    }
+//    private fun workManager() {
+//
+//        val constraints = androidx.work.Constraints.Builder()
+//            .setRequiresCharging(false)
+//            .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
+//            .setRequiresBatteryNotLow(true)
+//            .build()
+//
+//        val alarmRequest = PeriodicWorkRequest.Builder(
+//            MyWorker::class.java,
+//            15, // 최소 시간이 15분 -> TODO 나중에 1시간으로 설정할 것
+//            TimeUnit.MINUTES
+//        ).setConstraints(constraints).build()
+//
+//
+//        WorkManager.getInstance(this)
+//            .enqueueUniquePeriodicWork(
+//                "alarm",
+//                ExistingPeriodicWorkPolicy.REPLACE,
+//                alarmRequest
+//            )
+//    }
 }
